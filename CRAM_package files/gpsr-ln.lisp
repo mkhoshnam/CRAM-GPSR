@@ -19,12 +19,36 @@
 (defparameter *dialog-subscriber* nil)
 (defparameter *Listner-string* nil)
 
-(defun listener (topic-name)
+(defun planlistener (topic-name)
  ; (roslisp:with-ros-node ("listener" :spin t)
     (setf *dialog-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'subscriber-callback-function))
     ;)
 )
+;;;;;;;;;;;;;;;;;;;;;; 27 April
+(defun nlplistener (topic-name)
+  ;(roslisp:with-ros-node ("listener" :spin t)
+    (setf *plan-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'plan-callback-function))
+    ;)
+)
+(defparameter *nlplistner-word* nil)
+(defun plan-callback-function (message)
+    
+    (roslisp:with-fields (commands) message
+         
+         (setf *input* commands)
+         (setf *nlplistner-word* (intern (string-upcase (aref *input* 0)) :keyword))
+         (when (eq *nlplistner-word* :DONE)
+         
+         (sleep 1)
+         (urdf-proj:with-simulated-robot
+		(navigation-start-point)) ;;; go to the initial position 
+         )
+         (cram-talker "done")
+         (print *nlplistner-word*)
+         ))
 
+
+;;;;;;;;;;;;;;;;;;;;;;;;
 (defparameter *test* nil)
 (defun subscriber-callback-function (message)
     (roslisp:with-fields (commands) message
@@ -66,3 +90,7 @@
 			)
 	 )))
 ))
+
+
+
+
