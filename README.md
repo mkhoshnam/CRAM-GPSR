@@ -4,12 +4,12 @@
 while writing plans, after trying failure handling clause and if it fails , direct the robot to initial position for the next commmand.
 Some example 
 ``` lisp = 
-		(cpl:with-retry-counters ((place-retries 3))                           
-	  		(cpl:with-failure-handling
-			      (((or common-fail:navigation-goal-in-collision
-                    		    common-fail:object-undeliverable
-                    		    common-fail:manipulation-low-level-failure
-				    common-fail:navigation-low-level-failure) (e)
+(cpl:with-retry-counters ((place-retries 3))                           
+	  (cpl:with-failure-handling
+		(((or common-fail:navigation-goal-in-collision
+                  common-fail:object-undeliverable
+                  common-fail:manipulation-low-level-failure
+		  common-fail:navigation-low-level-failure) (e)
 				 (roslisp:ros-warn (pp-plans pick-up)
 						   "Manipulation messed up: ~a~%Retring..."
 						   e)
