@@ -72,19 +72,24 @@
 (if (not (eq ?location-to-go :nil))                    ;;; go to the location 
     (setf ?possible-location *location-on-counter*))
 
-(cpl:with-retry-counters ((grasp-retries 3))                           
+(cpl:with-retry-counters ((grasp-retries 1))                           
   (cpl:with-failure-handling
       (((or common-fail:manipulation-low-level-failure
                                   common-fail:object-unreachable
                                   common-fail:gripper-closed-completely
 				   common-fail:navigation-goal-in-collision
+				   common-fail:searching-failed
                                   desig:designator-error) (e)
          (roslisp:ros-warn (pp-plans pick-up)
                            "Manipulation messed up: ~a~%Retring..."
                            e)
-                            (cpl:do-retry grasp-retries
+         (cpl:do-retry grasp-retries
 
-                            (cpl:retry))
+         (cpl:retry))
+	 (cram-talker "failed")
+         (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+	 (navigation-start-point)
+	 (return)
                             
          ))
 	
@@ -136,9 +141,11 @@
 				 (roslisp:ros-warn (pp-plans pick-up)
 						   "Manipulation messed up: ~a~%Retring..."
 						   e)
-						    (cpl:do-retry place-retries
-
-						    (cpl:retry))
+				 (cpl:do-retry place-retries
+					(cpl:retry))
+				 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+				 (navigation-start-point)
+				 (return)
 						    
 				 ))		
 	(let ((?pose *location-near-sidetable*))
