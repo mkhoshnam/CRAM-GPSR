@@ -41,9 +41,13 @@
          
          (sleep 1)
          (urdf-proj:with-simulated-robot
-		(navigation-start-point)) ;;; go to the initial position 
+		(navigation-start-point)) ;;; go to the initial position
+		(cram-talker "DONE") 
          )
-         (cram-talker "done")
+         (when (eq *nlplistner-word* :FAIL)
+		(cram-talker "FAIL")        
+         )
+         
          (print *nlplistner-word*)
          ))
 
@@ -70,23 +74,23 @@
 	(setf *room2* (intern (string-upcase (aref *test* 12)) :keyword))
 	(cram-talker "plan")
 	(dolist (?plan-type list-of-plans) ;;; find plans if it is present in the list or not (list of plans declared above)
-        (when (eq ?plan-type *plan*)
+        (when (eq ?plan-type *plan*)  ;;; TO DO Add condiation... if plan is not there in the list
           (print "plan found...")
           (sleep 1)
           
          (urdf-proj:with-simulated-robot	
 		 (when (eq *plan* :FETCH)
 		 	(print "Performing fetching ...")
-			(fetching-object *objectname* *location1*) 
+			(setf ?output (fetching-object *objectname* *location1*)) 
 			(print "Fetching Plan Done ...")
-			(cram-talker "fetch")
+			(cram-talker ?output)
 			)
 
 		 (when (eq *plan* :DELIVER)
 		 	(print "Performing delivering ...")
-			(delivering-object *objectname* *location1*)
+			(setf ?output (delivering-object *objectname* *location1*))
 			(print "Delivering Plan Done ...")
-			(cram-talker "deliver")
+			(cram-talker ?output)
 			)
 			
 	 )))

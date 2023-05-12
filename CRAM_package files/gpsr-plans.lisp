@@ -86,10 +86,9 @@
          (cpl:do-retry grasp-retries
 
          (cpl:retry))
-	 (cram-talker "failed")
          (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
 	 (navigation-start-point)
-	 (return)
+	 (return-from fetching-object "fail")
                             
          ))
 	
@@ -112,7 +111,8 @@
 		             (type parking-arms)))
 	 (when (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_))
 		               (progn (print "Yes, I grasps the Object")
-		                      (setf grasped-object T)))
+		                      (setf grasped-object T))
+		                      (return-from fetching-object "fetch"))
 ))                                              	                                       	                                     
 )	
 
@@ -128,8 +128,13 @@
 	(when (eq (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_)) nil)
 		               (progn (print "Object is not in hand !.... going to grasp it..."))
 
-				(fetching-object ?object ?location-to-go)
-				(setf ?deliver-check T))
+				(setf ?output-check (fetching-object ?object ?location-to-go))
+					(when (eq ?output-check "fetch")
+						(setf ?deliver-check T))
+					(when (eq ?output-check "fail")
+						(setf ?deliver-check nil)
+						(return-from delivering-object "fail"))
+				)
 	
 	(when (eq ?deliver-check T)
 		(cpl:with-retry-counters ((place-retries 3))                           
@@ -145,7 +150,7 @@
 					(cpl:retry))
 				 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
 				 (navigation-start-point)
-				 (return)
+				 (return-from delivering-object "fail")
 						    
 				 ))		
 	(let ((?pose *location-near-sidetable*))
@@ -160,7 +165,8 @@
 		   (desig:an action
 		             (type placing)
 		             (target (desig:a location
-		                              (pose ?drop-pose))))))		                        
+		                              (pose ?drop-pose))))))
+		(return-from delivering-object "deliver")		                        
 		                     
 	 ))
 	)                           
