@@ -1,5 +1,11 @@
 (in-package :demo)
 
+
+
+
+;;;; list of objects
+(setf list-of-objects '(:bowl :spoon :cup :milk :breakfast-cereal))
+
 ;;;;navigating locations for Robot
 (defparameter *location-near-sidetable*
   (cl-transforms-stamped:make-pose-stamped
@@ -45,34 +51,62 @@
   (mapcar #'car btr::*mesh-files*))
 
 
-(defun make-pose (reference-frame pose)
-  (cl-transforms-stamped:make-pose-stamped
-   reference-frame 0.0
-   (apply #'cl-transforms:make-3d-vector (first pose))
-   (apply #'cl-transforms:make-quaternion (second pose))))
+
+
+;;;; functions dependencies
+(defun place-objects ()
+	(spawn-object '((-0.9 1.8  0.9) (0 0 0 1)) :spoon 'object-1 '(0.3 1 0))
+	(spawn-object '((-0.9 2  0.9) (0 0 0 1)) :bottle 'object-2 '(1 0.3 0.7))
+	(spawn-object '((-0.9 1.6  0.9) (0 0 0 1)) :bowl 'object-3 '(0.1 0.2 0))
+	(spawn-object '((-0.9 2.2  0.9) (0 0 0 1)) :cup 'object-4 '(0.1 0.2 0.5))
+	(spawn-object '((-0.9 1.7  0.9) (0 0 0 1)) :milk 'object-5 '(0.1 0.1 0.1))
+ )
+
+
+(defun finding-object (?object ?searching-location) ;;; (object : type) (location : keyword) e.g (finding-object :bowl :bedroom)
+	;;;; check for searching location
+	(if (eq ?searching-location :nil)
+	   (setf ?possible-location (get-searching-pose ?object)))  ;;;; search for location in knowledge
+	   
+	(if (not (eq ?searching-location :nil))                    ;;; go to the given location 
+	    (setf ?possible-location (get-searching-pose ?searching-location)))
+	
+	(cpl:with-retry-counters ((search-retries 2))                           
+	  (cpl:with-failure-handling
+	      (((or common-fail:manipulation-low-level-failure
+					   common-fail:navigation-goal-in-collision
+					   common-fail:searching-failed
+		                          desig:designator-error) (e)
+		 (roslisp:ros-warn (pp-plans pick-up)
+		                   "Searching messed up: ~a~%Retring..."
+		                   e)
+		 (cpl:do-retry search-retries
+
+		 (cpl:retry))
+		 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+		 (navigation-start-point)
+		 (return-from finding-object "fail")
+		                    
+		 ))
+	(let ((?search-location *location-on-counter*))
+	  (setf *per-object* (exe:perform
+				  (desig:an action
+					    (type searching)
+					    (object (desig:an object
+							      (type ?object)
+							      (location (desig:a location
+								               (pose ?search-location)))))))))))
+	(return-from finding-object "search")								               	
+)
+
+
 
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;; plans 
-
-
-
 (defparameter ?possible-location nil)  
    
-(defun fetching-object(?object ?location-to-go)
+(defun fetching-object(?object ?location-to-go)  ;;; (object : type) (location : keyword) e.g (fetching-object :bowl :bedroom)
  
-(spawn-object '((-0.9 1.8  0.9) (0 0 0 1)) :spoon 'object-1 '(0.3 1 0))
-(spawn-object '((-0.9 2  0.9) (0 0 0 1)) :bottle 'object-2 '(1 0.3 0.7))
- (spawn-object '((-0.9 1.6  0.9) (0 0 0 1)) :bowl 'object-3 '(0.1 0.2 0))
-(spawn-object '((-0.9 2.2  0.9) (0 0 0 1)) :cup 'object-4 '(0.1 0.2 0.5))
-(spawn-object '((-0.9 1.7  0.9) (0 0 0 1)) :milk 'object-5 '(0.1 0.1 0.1))
-;;;; check for picking up location
-	
-(if (eq ?location-to-go :nil)
-   (setf ?possible-location *location-on-counter*))  ;;;; search for location in knowledge
-   
-(if (not (eq ?location-to-go :nil))                    ;;; go to the location 
-    (setf ?possible-location *location-on-counter*))
-
-(cpl:with-retry-counters ((grasp-retries 1))                           
+(cpl:with-retry-counters ((grasp-retries 4))                           
   (cpl:with-failure-handling
       (((or common-fail:manipulation-low-level-failure
                                   common-fail:object-unreachable
@@ -91,24 +125,30 @@
 	 (return-from fetching-object "fail")
                             
          ))
-	
+	(if (eq ?object :object) ;;; get the object from buffer
+		(setf ?object *previous-object*))
+	;;;; search for the object
 	(setf grasped-object nil)
-    	(let ((?search-location *location-on-counter*))
-	  (setf *per-object* (exe:perform
-				  (desig:an action
-					    (type searching)
-					    (object (desig:an object
-							      (type ?object)
-							      (location (desig:a location
-								               (pose ?search-location)))))))))
-
-	 (let ((?perceived-object *per-object*))
+	(let ((?looking-for-object (finding-object ?object ?location-to-go)))
+	
+	(if (eq ?looking-for-object "fail")
+	    (return-from fetching-object "fail")) 
+	   
+	(if (not (eq ?looking-for-object "fail"))                
+	     (setf *per-object*(exe:perform (desig:an action
+					       (type detecting)
+					       (object (desig:an object
+							  (type ?object))))))
+	))
+		
+	(let ((?perceived-object *per-object*))
 	   	(exe:perform (desig:an action
 				(type picking-up)
 				 (object ?perceived-object))))
 	       (exe:perform
 		   (desig:an action
 		             (type parking-arms)))
+
 	 (when (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_))
 		               (progn (print "Yes, I grasps the Object")
 		                      (setf grasped-object T))
@@ -116,10 +156,13 @@
 ))                                              	                                       	                                     
 )	
 
-(defun delivering-object (?object ?location-to-go)
+(defun delivering-object (?object ?location-to-go) ;;; (object : type) (location : transformation in map)
 
 	(setf ?deliver-check nil)
-
+	
+	(if (eq ?object :object) ;;; get the object from buffer
+		(setf ?object *previous-object*))
+		
 	(when (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_))
 		               (progn (print "Yes, I have Object in hand !")
 		               (setf ?deliver-check T)

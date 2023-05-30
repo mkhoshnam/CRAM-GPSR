@@ -84,9 +84,10 @@
      (:file "costmaps" :depends-on ("package"))
      (:file "projection-demo" :depends-on ("package" "costmaps"))
      (:file "demo" :depends-on ("package" "projection-demo" "costmaps"))
-     (:file "gpsr-ln" :depends-on ("package" "projection-demo" "costmaps"))
+     (:file "gpsr-ln" :depends-on ("package" "projection-demo" "costmaps" "gpsr-knowledge"))
      (:file "gpsr-pub" :depends-on ("package" "projection-demo" "costmaps"))
-     (:file "gpsr-plans" :depends-on ("package" "projection-demo" "costmaps" "gpsr-ln"))
+     (:file "gpsr-plans" :depends-on ("package" "projection-demo" "costmaps" "gpsr-ln" "gpsr-knowledge"))
+     (:file "gpsr-knowledge" :depends-on ("package" "projection-demo" "costmaps"))
      (:file "milestone-projection-demo" :depends-on ("package"
                                                      "projection-demo"
                                                      "costmaps"))
