@@ -235,3 +235,17 @@
 				                      
 
 )
+
+;;;;;;; HSR
+(defun searching-object(?object)
+	(setf *perceived-object* nil)
+	 (setf *perceived-object* (exe:perform (desig:an action
+					       (type detecting)
+					       (object (desig:an object
+								(type ?object))))
+				  )
+	)
+	(return-from searching-object "search")
+	
+)
+
