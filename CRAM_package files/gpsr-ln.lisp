@@ -78,7 +78,7 @@
           
           
           ;;;;; Actions
-         (urdf-proj:with-simulated-robot	
+         (su-real:with-hsr-process-modules	
 		 
 		 (when (eq *plan* :SEARCH)
 		 	(print "Performing searching ...")
