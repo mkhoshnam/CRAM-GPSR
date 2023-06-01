@@ -296,5 +296,14 @@
 						                   							
 
 
+(defun transporting-object(?object ?room1 ?location1 ?room2 ?location2 ?person)
+	(print "transporation plan")
+	 (return-from transporting-object "transport")
+	)
+
+(defun guide-people(?person ?room1 ?location1)
+	(print "guide plan")
+	 (return-from guide-peopl "guide")
+	)
 
 
