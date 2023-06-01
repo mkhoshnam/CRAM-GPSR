@@ -1,4 +1,4 @@
-(in-package :demo)
+(in-package :su-demos)
 
 
 ;;;; list of plans
@@ -71,18 +71,21 @@
         (when (eq ?plan-type *plan*)  ;;; TO DO Add condiation... if plan is not there in the list
           (print "plan found...")
           (sleep 1)
-          
           ;;;; buffer knowledge
           (if (not (eq *objectname* :it))  ;;;; for buffer knowledege of previous object
 			(setf *previous-object* *objectname*))
-          
-          
-          ;;;;; Actions
-         (su-real:with-hsr-process-modules	
+   ;;;;; Actions
+   (su-real:with-hsr-process-modules
+		; (when (eq *plan* :SEARCH)
+		 ;	(print "Performing searching ...")
+			;(setf ?output (finding-object (object-to-be *objectname*) *location1*)) ;; *objectname* = get-object-cram-name(?nlp-object-name)
+			;(print "searching Plan Done ...")
+			;(cram-talker ?output)
+			;)
 		 
-		 (when (eq *plan* :SEARCH)
+		 (when (eq *plan* :search)
 		 	(print "Performing searching ...")
-			(setf ?output (finding-object (object-to-be *objectname*) *location1*)) ;; *objectname* = get-object-cram-name(?nlp-object-name)
+			(setf ?output (searching-object (object-to-be *objectname*))) ;; *objectname* = get-object-cram-name(?nlp-object-name)
 			(print "searching Plan Done ...")
 			(cram-talker ?output)
 			)
@@ -102,7 +105,9 @@
 			)
 			(print *previous-object*)
 			
-	 )))
+	
+	 )
+	 ))
 ))
 
 

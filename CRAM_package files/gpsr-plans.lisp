@@ -1,5 +1,4 @@
-(in-package :demo)
-
+(in-package :su-demos)
 
 
 
@@ -49,6 +48,12 @@
 
 (defun list-available-objects ()
   (mapcar #'car btr::*mesh-files*))
+  
+(defun move-the-torse(?jointangle)  ;;; for parking = 0.0 and full extent = 0.3
+	(exe:perform (desig:a motion 
+                              (type moving-torso)
+                              (joint-angle ?jointangle))))
+
 
 
 
@@ -236,16 +241,55 @@
 
 )
 
-;;;;;;; HSR
-(defun searching-object(?object)
-	(setf *perceived-object* nil)
-	 (setf *perceived-object* (exe:perform (desig:an action
-					       (type detecting)
-					       (object (desig:an object
-								(type ?object))))
-				  )
-	)
-	(return-from searching-object "search")
-	
-)
+
+;;;;;;;;;;;;;;;;;;;;;;;;; HSR PLANS
+ 
+
+(defun navigate-to-location(?location)
+            (let* ((?pose ?location))
+                     (exe:perform (desig:an action
+                                            (type going)
+                                            (target (desig:a location
+                                                             (pose ?pose)))))))    
+
+(defun searching-object (?object)
+ (setf *perceived-object* nil)
+(call-text-to-speech-action "Trying to perceive object")
+ (let* ((possible-look-directions `(,*forward-upward*
+                                     ,*left-downward*
+                                     ,*right-upward*
+                                     ,*forward-downward*))
+         (?looking-direction (first possible-look-directions)))
+    (setf possible-look-directions (cdr possible-look-directions))
+	(cpl:with-failure-handling
+			  (((or common-fail:perception-object-not-found
+			  					desig:designator-error) (e)
+					 (when possible-look-directions
+					 (roslisp:ros-warn  (perception-failure) "Searching messed up: ~a~%Retring by turning head..." e)
+				     (setf ?looking-direction (first possible-look-directions))
+				     (setf possible-look-directions (cdr possible-look-directions))
+				     (exe:perform (desig:an action 
+				                           (type looking)
+				                           (target (desig:a location
+				                                            (pose ?looking-direction)))))
+				     (cpl:retry))
+				     
+				     
+					 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+					 ;;; (navigation-start-point) ;;; go back to the start point when fails
+					 (return-from searching-object "fail")
+				                
+			 ))
+
+                (setf *perceived-object* (exe:perform (desig:an action
+						                                (type detecting)
+						                                (object (desig:an object
+						                   							(type ?object))))))
+						                   							(call-text-to-speech-action "Successfully perceived object")
+						                   							(return-from searching-object "search"))
+	))
+						                   							
+
+
+
 

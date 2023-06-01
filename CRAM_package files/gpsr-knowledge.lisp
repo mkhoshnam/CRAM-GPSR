@@ -1,4 +1,4 @@
-(in-package :demo)
+(in-package :su-demos)
 
 ;;;; Dependencies Functions
 (defun make-pose (reference-frame pose)
@@ -31,7 +31,44 @@
 	(nreverse ?outcome))
 )
  
+ ;;;;;; Head movement psoitions
  
+ (defparameter *left-downward*
+  (cl-transforms-stamped:make-pose-stamped
+   "base_footprint" 0.0
+   (cl-transforms:make-3d-vector 0.65335d0 0.76d0 0.758d0)
+   (cl-transforms:make-identity-rotation)))
+
+ (defparameter *left-upward*
+  (cl-transforms-stamped:make-pose-stamped
+   "base_footprint" 0.0
+   (cl-transforms:make-3d-vector 0.65335d0 0.76d0 0.958d0)
+   (cl-transforms:make-identity-rotation)))
+ 
+(defparameter *right-downward*
+  (cl-transforms-stamped:make-pose-stamped
+   "base_footprint" 0.0
+   (cl-transforms:make-3d-vector 0.65335d0 -0.76d0 0.758d0)
+   (cl-transforms:make-identity-rotation)))
+ 
+(defparameter *right-upward*
+  (cl-transforms-stamped:make-pose-stamped
+   "base_footprint" 0.0
+   (cl-transforms:make-3d-vector 0.65335d0 -0.76d0 0.958d0)
+   (cl-transforms:make-identity-rotation)))
+   
+(defparameter *forward-downward*
+  (cl-transforms-stamped:make-pose-stamped
+   "base_footprint" 0.0
+   (cl-transforms:make-3d-vector 0.65335d0 0.076d0 0.758d0)
+   (cl-transforms:make-identity-rotation)))
+   
+(defparameter *forward-upward*
+  (cl-transforms-stamped:make-pose-stamped
+   "base_footprint" 0.0
+   (cl-transforms:make-3d-vector 0.65335d0 0.076d0 0.958d0)
+   (cl-transforms:make-identity-rotation)))
+  
   
  ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
  ;;;; object knowledge
@@ -109,34 +146,34 @@
  
 ;;;;navigating locations for Robot
 
-(defvar *gpsr-navigation-locations* '((:start-point (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 1.0d0 0.0d0))))
-				(:bedroom (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 1.0d0 0.0d0))))  
-				(:living-room (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 1.0d0 0.0d0))))
-				(:kitchen (make-pose "map" '((-2.2d0 -0.20d0 0.0d0) (0.0d0 0.0d0 -0.7071067811865475d0 0.7071067811865476d0))))
-				(:dinning-room (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 1.0d0 0.0d0))))
-				(:corridor (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 1.0d0 0.0d0))))
-				(:side-table (make-pose "map" '((-2.2d0 -0.20d0 0.0d0) (0.0d0 0.0d0 -0.7071067811865475d0 0.7071067811865476d0))))
-				(:counter (make-pose "map" '((-0.150d0 2.0d0 0.0d0) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-				(:sink (make-pose "map" '((1.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 1.0d0 0.0d0))))
+(defvar *gpsr-navigation-locations* '((:start-point (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:bedroom (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))  
+				(:living-room (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:kitchen (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:dinning-room (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:corridor (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:side-table (make-pose "base_footprint" '((-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:counter (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+				(:sink (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				
 				))
 				
 				
 ;;;; locations on the object / searching locations / pickup and place locations
 
-(defvar *gpsr-locations-on-object* '((:counter (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:side-table (make-pose "map" '((-2.323 -1 0.82) (0.0d0 0.0d0 0.0d0 1.0d0))))
-					(:end-table (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:storage-table (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:cupboard (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:bookcase (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:entrance (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:dinning-table (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:bed (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:desk (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:exit (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:couch (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
-					(:dishwasher (make-pose "map" '((-0.8 2 0.9) (0.0d0 0.0d0 -1.0d0 0.0d0))))
+(defvar *gpsr-locations-on-object* '((:counter (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:side-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:end-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:storage-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:cupboard (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:bookcase (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:entrance (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:dinning-table (make-pose "base_footprint" '((-0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:bed (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:desk (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:exit (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:couch (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:dishwasher (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					
 					))
                     

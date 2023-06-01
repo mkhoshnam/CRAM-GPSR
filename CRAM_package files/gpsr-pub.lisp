@@ -1,4 +1,4 @@
-(in-package :demo)
+(in-package :su-demos)
 (defun cram-talker (command)
   "Periodically print a string message on the /chatter topic"
     (let ((pub (roslisp:advertise "CRAMpub" "std_msgs/String")))
