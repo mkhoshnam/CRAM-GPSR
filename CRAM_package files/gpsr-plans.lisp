@@ -246,11 +246,20 @@
  
 
 (defun navigate-to-location(?location)
-            (let* ((?pose ?location))
-                     (exe:perform (desig:an action
-                                            (type going)
-                                            (target (desig:a location
-                                                             (pose ?pose)))))))    
+      (cpl:with-failure-handling
+	      ((common-fail:navigation-low-level-failure (e)
+		 (roslisp:ros-warn (pp-plans navigate)
+				   "Low-level navigation failed: ~a~%.Ignoring anyway." e)
+		 (return-from navigate-to-location "fail")))    
+		(let* ((?pose ?location))
+			     (exe:perform (desig:an action
+						    (type going)
+						    (target (desig:a location
+								     (pose ?pose))))))
+       )
+(return-from navigate-to-location "fail"))
+
+
 (defun searching-object (?object)
  (setf *perceived-object* nil)
 (call-text-to-speech-action "Trying to perceive object")
