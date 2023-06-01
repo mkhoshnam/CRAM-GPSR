@@ -2,7 +2,7 @@
 
 
 ;;;; list of plans
-(setf list-of-plans '(:fetch :deliver :search))
+(setf list-of-plans '(:fetch :deliver :search :navigate))
 
 
 (defparameter *per-object* nil)
@@ -82,7 +82,13 @@
 			;(print "searching Plan Done ...")
 			;(cram-talker ?output)
 			;)
-		 
+		 (when (eq *plan* :navigate)
+		 	(print "Performing navigation ...")
+			(setf ?output (naviagte-to-location *location1*)) ;; *objectname* = get-object-cram-name(?nlp-object-name)
+			(print "Navigation Plan Done ...")
+			(cram-talker ?output)
+			)
+    
 		 (when (eq *plan* :search)
 		 	(print "Performing searching ...")
 			(setf ?output (searching-object (object-to-be *objectname*))) ;; *objectname* = get-object-cram-name(?nlp-object-name)
