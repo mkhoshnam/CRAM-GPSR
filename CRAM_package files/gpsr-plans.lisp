@@ -257,7 +257,7 @@
 						    (target (desig:a location
 								     (pose ?pose))))))
        )
-(return-from navigate-to-location "fail"))
+(return-from navigate-to-location "navigate"))
 
 
 (defun searching-object (?object)
