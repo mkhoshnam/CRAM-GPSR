@@ -251,7 +251,6 @@
                                             (type going)
                                             (target (desig:a location
                                                              (pose ?pose)))))))    
-
 (defun searching-object (?object)
  (setf *perceived-object* nil)
 (call-text-to-speech-action "Trying to perceive object")
@@ -274,20 +273,17 @@
 				                                            (pose ?looking-direction)))))
 				     (cpl:retry))
 				     
-				     
 					 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
-					 ;;; (navigation-start-point) ;;; go back to the start point when fails
 					 (return-from searching-object "fail")
 				                
 			 ))
 
                 (setf *perceived-object* (exe:perform (desig:an action
-						                                (type detecting)
-						                                (object (desig:an object
-						                   							(type ?object))))))
-						                   							(call-text-to-speech-action "Successfully perceived object")
-						                   							(return-from searching-object "search"))
-	))
+						       (type detecting)
+						       (object (desig:an object
+						       (type ?object))))))
+						       (call-text-to-speech-action "Successfully perceived object")
+						       (return-from searching-object "search"))))
 						                   							
 
 
