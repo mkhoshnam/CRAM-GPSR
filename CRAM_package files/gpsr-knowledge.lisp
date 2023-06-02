@@ -110,14 +110,14 @@
 ;;;; location knowledge
 
 (defvar *gpsr-rooms-locations* '((:bedroom :bed :desk :side-table)  ;;;; :room :location1-in-room :location2-in-room ...
-  				     (:living-room :exit :couch :endtable :bookcase)
+  				     (:living-room :exit :couch :end-table :bookcase)
   				     (:kitchen :cupboard :storage-table :sink :counter :dishwasher)
   				     (:dinning-room :dinning-table)
   				     (:corridor :entrance)))
  
 
 ;;; person 
-(defvar *persons* '((:alex :female :male)
+(defvar *persons-name* '((:alex :female :male)
 			(:charlie :female :male)
 			(:elizabeth :female)
 			(:francis :female :male)
@@ -152,10 +152,7 @@
 				(:kitchen (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				(:dinning-room (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				(:corridor (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				(:side-table (make-pose "base_footprint" '((-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				(:counter (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				(:sink (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				
+				(:entrance (make-pose "base_footprint" '((-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))				
 				))
 (defvar *gpsr-navigation-locations-near-objects* '((:counter (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:side-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
@@ -170,6 +167,7 @@
 					(:exit (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:couch (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:dishwasher (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:sink (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					
 					))
 				
@@ -259,7 +257,7 @@
 
 )
 
-(defun get-navigation-pose (?keyword) ;; give room name or location 
+(defun get-navigation-pose (?keyword) ;; give room name
 	(nth 1 (first (get-info-word ?keyword  *gpsr-navigation-locations*)))
 )
 
