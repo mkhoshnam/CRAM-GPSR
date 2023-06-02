@@ -154,7 +154,7 @@
 				(:corridor (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				(:entrance (make-pose "base_footprint" '((-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))				
 				))
-(defvar *gpsr-navigation-locations-near-objects* '((:counter (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+(defvar *gpsr-navigation-locations-near-furniture* '((:counter (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:side-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:end-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:storage-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
@@ -174,7 +174,7 @@
 				
 ;;;; locations on the object / searching locations / pickup and place locations
 
-(defvar *gpsr-locations-on-object* '((:counter (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+(defvar *gpsr-locations-on-furniture* '((:counter (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:side-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:end-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:storage-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
@@ -264,11 +264,11 @@
 ;;; give object keyword
 (defun get-searching-look-direction (?keyword) ;;;  (get-searching-look-direction :counter) or  (get-searching-look-direction :juice)
 	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
-	(nth 1 (first (get-info-word ?get-location *gpsr-locations-on-object*)))))
+	(nth 1 (first (get-info-word ?get-location *gpsr-locations-on-furniture*)))))
 	
 
-(defun get-navigation-location-near-object (?keyword) ;;;  (get-navigation-location-near-object :counter) 
+(defun get-navigation-location-near-furniture (?keyword) ;;;  (get-navigation-location-near-furniture :counter) 
 	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
-	(nth 1 (first (get-info-word ?get-location *gpsr-navigation-locations-near-objects*)))))
+	(nth 1 (first (get-info-word ?get-location *gpsr-navigation-locations-near-furniture*)))))
 	
 
