@@ -62,8 +62,8 @@
 	(setf *personaction* (intern (string-upcase (substitute #\- #\space (aref *test* 6))) :keyword))
 	(setf *color* (intern (string-upcase (aref *test* 7)) :keyword))
 	(setf *number* (intern (string-upcase (aref *test* 8)) :keyword))
-	(setf *location1* (intern (string-upcase (substitute #\- #\space (aref *test* 9))) :keyword))
-	(setf *location2* (intern (string-upcase (substitute #\- #\space (aref *test* 10))) :keyword))
+	(setf *fur-location1* (intern (string-upcase (substitute #\- #\space (aref *test* 9))) :keyword))
+	(setf *fur-location2* (intern (string-upcase (substitute #\- #\space (aref *test* 10))) :keyword))
 	(setf *room1* (intern (string-upcase (substitute #\- #\space (aref *test* 11))) :keyword))
 	(setf *room2* (intern (string-upcase (substitute #\- #\space (aref *test* 12))) :keyword))
 	(cram-talker "plan")
@@ -78,7 +78,7 @@
    (su-real:with-hsr-process-modules
 		 (when (eq *plan* :navigate)
 		 	(print "Performing navigation ...")
-			(setf ?output (naviagte-to-location *location1*)) 
+			(setf ?output (naviagte-to-location *fur-location1* *room1*)) ;;; location-in-room or room 
 			(print "Navigation Plan Done ...")
 			(cram-talker ?output)
 			)
@@ -92,14 +92,14 @@
 		 
 		 (when (eq *plan* :fetch)
 		 	(print "Performing fetching ...")
-			(setf ?output (fetching-object (object-to-be *objectname*) *location1*)) 
+			(setf ?output (fetching-object (object-to-be *objectname*) *fur-location1*)) 
 			(print "Fetching Plan Done ...")
 			(cram-talker ?output)
 			)
 
 		 (when (eq *plan* :deliver)
 		 	(print "Performing delivering ...")
-			(setf ?output (delivering-object (object-to-be *objectname*) *location1*))
+			(setf ?output (delivering-object (object-to-be *objectname*) *fur-location1*))
 			(print "Delivering Plan Done ...")
 			(cram-talker ?output)
 			)
@@ -107,20 +107,20 @@
     		
     		(when (eq *plan* :transport)
 		 	(print "Performing transport ...")
-			(setf ?output (transporting-object (object-to-be *objectname*) *room1* *location1* *room2* *location2* *personname*)) ;;; person or second location/room
+			(setf ?output (transporting-object (object-to-be *objectname*) *room1* *fur-location1* *room2* *fur-location2* *personname*)) ;;; person or second location/room
 			(print "Transport Plan Done ...")
 			(cram-talker ?output)
 			)
     		
     		(when (eq *plan* :guide)
 		 	(print "Performing guiding ...")
-			(setf ?output (guide-people *personname* *room1* *location1*)) ;; room or location
+			(setf ?output (guide-people *personname* *room1* *fur-location1*)) ;; room or location
 			(print "Guiding Plan Done ...")
 			(cram-talker ?output)
 			)
         	(when (eq *plan* :follow)
 		 	(print "Performing following ...")
-			(setf ?output (follow-people *personname* *room1* *location1*)) ;; room or location
+			(setf ?output (follow-people *personname* *room1* *fur-location1*)) ;; room or location
 			(print "Following Plan Done ...")
 			(cram-talker ?output)
 			)
