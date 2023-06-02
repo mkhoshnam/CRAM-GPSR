@@ -157,6 +157,21 @@
 				(:sink (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				
 				))
+(defvar *gpsr-navigation-locations-near-objects* '((:counter (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:side-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:end-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:storage-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:cupboard (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:bookcase (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:entrance (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:dinning-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:bed (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:desk (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:exit (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:couch (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:dishwasher (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					
+					))
 				
 				
 ;;;; locations on the object / searching locations / pickup and place locations
@@ -249,8 +264,13 @@
 )
 
 ;;; give object keyword
-(defun get-searching-pose (?keyword) ;;;  (get-searching-pose :counter) or  (get-searching-pose :juice)
+(defun get-searching-look-direction (?keyword) ;;;  (get-searching-look-direction :counter) or  (get-searching-look-direction :juice)
 	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
 	(nth 1 (first (get-info-word ?get-location *gpsr-locations-on-object*)))))
+	
+
+(defun get-navigation-location-near-object (?keyword) ;;;  (get-navigation-location-near-object :counter) 
+	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
+	(nth 1 (first (get-info-word ?get-location *gpsr-navigation-locations-near-objects*)))))
 	
 
