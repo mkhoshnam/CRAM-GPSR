@@ -90,14 +90,14 @@
 			(cram-talker ?output)
 			)
 		 
-		 (when (eq *plan* :FETCH)
+		 (when (eq *plan* :fetch)
 		 	(print "Performing fetching ...")
 			(setf ?output (fetching-object (object-to-be *objectname*) *location1*)) 
 			(print "Fetching Plan Done ...")
 			(cram-talker ?output)
 			)
 
-		 (when (eq *plan* :DELIVER)
+		 (when (eq *plan* :deliver)
 		 	(print "Performing delivering ...")
 			(setf ?output (delivering-object (object-to-be *objectname*) *location1*))
 			(print "Delivering Plan Done ...")
