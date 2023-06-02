@@ -245,8 +245,16 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;; HSR PLANS
  
 
-(defun navigate-to-location(?location)
-      (cpl:with-failure-handling
+(defun navigate-to-location(?location ?room) ;;; input keywords... give atleast one input 
+      ;;; get pose 
+	(if (eq ?location :nil) ;;; if location of the object not given then take the room  location
+	    (setf ?navigation-pose (get-navigation-pose ?room)))
+	(if (eq ?room :nil) ;;;; if room is not given then take the location of the object
+	    (setf ?navigation-pose (get-navigation-location-near-furniture ?location)))
+	
+	 
+	
+	(cpl:with-failure-handling
 	      ((common-fail:navigation-low-level-failure (e)
 		 (roslisp:ros-warn (pp-plans navigate)
 				   "Low-level navigation failed: ~a~%.Ignoring anyway." e)
