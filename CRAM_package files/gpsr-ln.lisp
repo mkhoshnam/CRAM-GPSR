@@ -1,8 +1,9 @@
-(in-package :su-demos)
+(in-package :demo)
 
 
 ;;;; list of plans
-(setf list-of-plans '(:fetch :deliver :search :navigate :transport :guide :follow :count :greet))
+;;;; list of plans
+(setf list-of-plans '(:navigate :search :fetch :deliver :transport :guide :follow :count :greet))
 
 
 (defparameter *per-object* nil)
@@ -18,7 +19,7 @@
     (setf *dialog-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'subscriber-callback-function))
     ;)
 )
-;;;;;;;;;;;;;;;;;;;;;; 27 April
+
 (defun nlplistener (topic-name)
   ;(roslisp:with-ros-node ("listener" :spin t)
     (setf *plan-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'plan-callback-function))
@@ -71,63 +72,70 @@
         (when (eq ?plan-type *plan*)  ;;; TO DO Add condiation... if plan is not there in the list
           (print "plan found...")
           (sleep 1)
+          
           ;;;; buffer knowledge
           (if (not (eq *objectname* :it))  ;;;; for buffer knowledege of previous object
 			(setf *previous-object* *objectname*))
-   ;;;;; Actions
-   (su-real:with-hsr-process-modules
-		 (when (eq *plan* :navigate)
-		 	(print "Performing navigation ...")
-			(setf ?output (naviagte-to-location *fur-location1* *room1*)) ;;; location-in-room or room 
-			(print "Navigation Plan Done ...")
-			(cram-talker ?output)
-			)
-    
-		 (when (eq *plan* :search)
-		 	(print "Performing searching ...")
-			(setf ?output (searching-object (object-to-be *objectname*))) ;; *objectname* = get-object-cram-name(?nlp-object-name)
-			(print "searching Plan Done ...")
-			(cram-talker ?output)
-			)
-		 
-		 (when (eq *plan* :fetch)
-		 	(print "Performing fetching ...")
-			(setf ?output (fetching-object (object-to-be *objectname*) *fur-location1*)) 
-			(print "Fetching Plan Done ...")
-			(cram-talker ?output)
-			)
+          
+          
+          ;;;;; Actions
+		 (urdf-proj:with-simulated-robot	
+			 
+	 		(when (eq *plan* :navigate)
+			 	(print "Performing navigation ...")
+				(setf ?output (naviagte-to-location *fur-location1* *room1*)) ;;; location-in-room or room 
+				(print "Navigation Plan Done ...")
+				(cram-talker ?output)
+				)
+	    
+			 (when (eq *plan* :search)
+			 	(print "Performing searching ...") ;; search for object/person on furniture/in a room
+				(setf ?output (searching-object (object-to-be *objectname*) (get-any-person-feature *personname* *persontype* *personaction*) *fur-location1* *room1*)) 
+				(print "searching Plan Done ...")
+				(cram-talker ?output)
+				)
+			 
+			 (when (eq *plan* :fetch)
+			 	(print "Performing fetching ...")
+				(setf ?output (fetching-object (object-to-be *objectname*) *fur-location1* *room1*)) 
+				(print "Fetching Plan Done ...")
+				(cram-talker ?output)
+				)
 
-		 (when (eq *plan* :deliver)
-		 	(print "Performing delivering ...")
-			(setf ?output (delivering-object (object-to-be *objectname*) *fur-location1*))
-			(print "Delivering Plan Done ...")
-			(cram-talker ?output)
-			)
-			(print *previous-object*)
-    		
-    		(when (eq *plan* :transport)
-		 	(print "Performing transport ...")
-			(setf ?output (transporting-object (object-to-be *objectname*) *room1* *fur-location1* *room2* *fur-location2* *personname*)) ;;; person or second location/room
-			(print "Transport Plan Done ...")
-			(cram-talker ?output)
-			)
-    		
-    		(when (eq *plan* :guide)
-		 	(print "Performing guiding ...")
-			(setf ?output (guide-people *personname* *room1* *fur-location1*)) ;; room or location
-			(print "Guiding Plan Done ...")
-			(cram-talker ?output)
-			)
-        	(when (eq *plan* :follow)
-		 	(print "Performing following ...")
-			(setf ?output (follow-people *personname* *room1* *fur-location1*)) ;; room or location
-			(print "Following Plan Done ...")
-			(cram-talker ?output)
-			)
-
-	 )
+			 (when (eq *plan* :deliver)
+			 	(print "Performing delivering ...") ;;; deliver object to location/person
+				(setf ?output (delivering-object *objectname* *fur-location1* *room1* (get-any-person-feature *personname* *persontype* *personaction*)))
+				(print "Delivering Plan Done ...")
+				(cram-talker ?output)
+				)
+				(print *previous-object*)
+	    		
+	    		(when (eq *plan* :transport)
+			 	(print "Performing transport ...")
+				(setf ?output (transporting-object (object-to-be *objectname*) *room1* *fur-location1* *room2* *fur-location2* *personname*)) ;;; person or second location/room
+				(print "Transport Plan Done ...")
+				(cram-talker ?output)
+				)
+	    		
+	    		(when (eq *plan* :guide)
+			 	(print "Performing guiding ...")
+				(setf ?output (guide-people *personname* *room1* *fur-location1*)) ;; room or location
+				(print "Guiding Plan Done ...")
+				(cram-talker ?output)
+				)
+			(when (eq *plan* :follow)
+			 	(print "Performing following ...")
+				(setf ?output (follow-people *personname* *room1* *fur-location1*)) ;; room or location
+				(print "Following Plan Done ...")
+				(cram-talker ?output)
+				)
+		 )
 	 ))
-))
+	)
+)
+
+
+
 
 
 

@@ -1,4 +1,4 @@
-(in-package :su-demos)
+(in-package :demo)
 
 ;;;; Dependencies Functions
 (defun make-pose (reference-frame pose)
@@ -131,9 +131,20 @@
 			(:michael :male)
 			(:robert :male)
 			(:skyler :female :male)
-			(:william :male)
+			(:william :male)))
+			
+;;; person actions
+(defvar *persons-action* '((:sitting :sitting) ;;;; :nlp-name cram-name
+			(:standing :standing)
+			(:talking)
+			(:lying-down)
+			(:pointing-to-the-left)
+			(:pointing-to-the-right)
+			(:raising-right-arm)
+			(:raising-left-arm)
+			(:waving)))
 
-))
+
 ;;;; nlp personal pronouns mapping with cram
 
 (defvar *pronouns* '((:object :objects :it)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
@@ -142,6 +153,9 @@
 
 
 
+;;;; numbers
+
+(defvar *nlp-numbers* '(:one :two :three :four :five :six :seven :eight :nine :ten))
 
  
 ;;;;navigating locations for Robot
@@ -192,7 +206,7 @@
                     
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-info-word (?searching-word ?list)  ;;; (get-info-word :spoon *objects*)
+(defun get-info-word (?searching-word ?list)  ;;; (get-info-word :spoon *gpsr-objects*)
 	
 	(let ((?result (find-keyword ?searching-word ?list)))
 		(setf ?element (find-non-nil-element ?result))
@@ -270,5 +284,21 @@
 (defun get-navigation-location-near-furniture (?keyword) ;;;  (get-navigation-location-near-furniture :counter) 
 	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
 	(nth 1 (first (get-info-word ?get-location *gpsr-navigation-locations-near-furniture*)))))
-	
 
+(defun get-any-person-feature (?pr-name ?pr-type ?pr-action)
+	(if (not(eq ?pr-name :nil))
+		(return-from get-any-person-feature ?pr-name))
+	(if (not(eq ?pr-type :nil))
+		(return-from get-any-person-feature ?pr-type))
+	(if (not(eq ?pr-action :nil))
+		(return-from get-any-person-feature ?pr-action))
+)
+
+;;; check for person pronoun
+(defun get-pronoun-title(?pronoun)
+	(nth 0 (first (get-info-word ?pronoun *pronouns*)))
+)
+
+
+ 
+	
