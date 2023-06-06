@@ -1,4 +1,4 @@
-(in-package :su-demos)
+(in-package :demo)
 
 ;;;; Dependencies Functions
 (defun make-pose (reference-frame pose)
@@ -110,14 +110,14 @@
 ;;;; location knowledge
 
 (defvar *gpsr-rooms-locations* '((:bedroom :bed :desk :side-table)  ;;;; :room :location1-in-room :location2-in-room ...
-  				     (:living-room :exit :couch :endtable :bookcase)
+  				     (:living-room :exit :couch :end-table :bookcase)
   				     (:kitchen :cupboard :storage-table :sink :counter :dishwasher)
   				     (:dinning-room :dinning-table)
   				     (:corridor :entrance)))
  
 
 ;;; person 
-(defvar *persons* '((:alex :female :male)
+(defvar *persons-name* '((:alex :female :male)
 			(:charlie :female :male)
 			(:elizabeth :female)
 			(:francis :female :male)
@@ -131,9 +131,20 @@
 			(:michael :male)
 			(:robert :male)
 			(:skyler :female :male)
-			(:william :male)
+			(:william :male)))
+			
+;;; person actions
+(defvar *persons-action* '((:sitting :sitting) ;;;; :nlp-name cram-name
+			(:standing :standing)
+			(:talking)
+			(:lying-down)
+			(:pointing-to-the-left)
+			(:pointing-to-the-right)
+			(:raising-right-arm)
+			(:raising-left-arm)
+			(:waving)))
 
-))
+
 ;;;; nlp personal pronouns mapping with cram
 
 (defvar *pronouns* '((:object :objects :it)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
@@ -142,6 +153,9 @@
 
 
 
+;;;; numbers
+
+(defvar *nlp-numbers* '(:one :two :three :four :five :six :seven :eight :nine :ten))
 
  
 ;;;;navigating locations for Robot
@@ -152,16 +166,29 @@
 				(:kitchen (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				(:dinning-room (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 				(:corridor (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				(:side-table (make-pose "base_footprint" '((-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				(:counter (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				(:sink (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
-				
+				(:entrance (make-pose "base_footprint" '((-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))				
 				))
+(defvar *gpsr-navigation-locations-near-furniture* '((:counter (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:side-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:end-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:storage-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:cupboard (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:bookcase (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:entrance (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:dinning-table (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:bed (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:desk (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:exit (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:couch (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:dishwasher (make-pose "map" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					(:sink (make-pose "base_footprint" '((0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+					
+					))
 				
 				
 ;;;; locations on the object / searching locations / pickup and place locations
 
-(defvar *gpsr-locations-on-object* '((:counter (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+(defvar *gpsr-locations-on-furniture* '((:counter (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:side-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:end-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
 					(:storage-table (make-pose "base_footprint" '((0.65335d0 0.076d0 0.758d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
@@ -179,7 +206,7 @@
                     
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-(defun get-info-word (?searching-word ?list)  ;;; (get-info-word :spoon *objects*)
+(defun get-info-word (?searching-word ?list)  ;;; (get-info-word :spoon *gpsr-objects*)
 	
 	(let ((?result (find-keyword ?searching-word ?list)))
 		(setf ?element (find-non-nil-element ?result))
@@ -244,13 +271,34 @@
 
 )
 
-(defun get-navigation-pose (?keyword) ;; give room name or location 
+(defun get-navigation-pose (?keyword) ;; give room name
 	(nth 1 (first (get-info-word ?keyword  *gpsr-navigation-locations*)))
 )
 
 ;;; give object keyword
-(defun get-searching-pose (?keyword) ;;;  (get-searching-pose :counter) or  (get-searching-pose :juice)
+(defun get-searching-look-direction (?keyword) ;;;  (get-searching-look-direction :counter) or  (get-searching-look-direction :juice)
 	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
-	(nth 1 (first (get-info-word ?get-location *gpsr-locations-on-object*)))))
+	(nth 1 (first (get-info-word ?get-location *gpsr-locations-on-furniture*)))))
 	
 
+(defun get-navigation-location-near-furniture (?keyword) ;;;  (get-navigation-location-near-furniture :counter) 
+	(let ((?get-location (get-specific-info-word ?keyword :default-location-in-room *gpsr-objects*)))
+	(nth 1 (first (get-info-word ?get-location *gpsr-navigation-locations-near-furniture*)))))
+
+(defun get-any-person-feature (?pr-name ?pr-type ?pr-action)
+	(if (not(eq ?pr-name :nil))
+		(return-from get-any-person-feature ?pr-name))
+	(if (not(eq ?pr-type :nil))
+		(return-from get-any-person-feature ?pr-type))
+	(if (not(eq ?pr-action :nil))
+		(return-from get-any-person-feature ?pr-action))
+)
+
+;;; check for person pronoun
+(defun get-pronoun-title(?pronoun)
+	(nth 0 (first (get-info-word ?pronoun *pronouns*)))
+)
+
+
+ 
+	
