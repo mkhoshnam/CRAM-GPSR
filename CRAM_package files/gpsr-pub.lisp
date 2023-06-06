@@ -4,6 +4,15 @@
     (let ((pub (roslisp:advertise "CRAMpub" "std_msgs/String")))
       
          (roslisp:publish-msg pub :data (format nil command))))
-
          
+
+(defun hsrtospeak (topic-name)
+    (setf *dialog-subscriber* (roslisp:subscribe topic-name "std_msgs/String" #'hsrspeaks-callback-function)))
+    
+(defun hsrspeaks-callback-function (message)
+	(roslisp:with-fields (data) message
+         (print data)
+         (call-text-to-speech-action data)))
+
+
 
