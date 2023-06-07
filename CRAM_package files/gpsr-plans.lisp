@@ -6,8 +6,6 @@
 ;;;;;;;; Dependencies
 
 
-
-
 ;;;;;;;;;;;;;;;;;;;;;;;;; HSR PLANS ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 
@@ -69,6 +67,7 @@
     (setf possible-look-directions (cdr possible-look-directions))
 	(cpl:with-failure-handling
 			  (((or common-fail:perception-object-not-found
+			  	common-fail:perception-low-level-failure
 			  					desig:designator-error) (e)
 					 (when possible-look-directions
 					 (roslisp:ros-warn  (perception-failure) "Searching messed up: ~a~%Retring by turning head..." e)
@@ -120,9 +119,46 @@
 
   (searching-object ?object :nil ?location-nr-furt ?room) ;;; search for the object on the furniture and save object designator in *perceived-object* 
 	
-	;;--->>>>> ADD pickup plan with failure handling and use  *perceived-object* to get object designator
-	(print "fetching plan")
-	(return-from fetching-object  "fetch"))
+	;;--->>>>> ADD pickup plan with failure handling and (searching plan save the object designator in global variable ) use  *perceived-object* to get object designator
+ (roslisp:with-fields
+          ((?pose
+           (cram-designators::pose cram-designators:data)))
+           *perceived-object*
+  ;;(setf ?object-size (cl-tf2::make-3d-vector 0.05 0.05 0.2))   ;;TO-DO: espicify the object size for each different object   
+		 ;;;; Failure handlers
+		 (cpl:with-retry-counters ((grasp-retries 2))   
+		    (cpl:with-failure-handling
+			(((or common-fail:navigation-high-level-failure
+			      common-fail:manipulation-low-level-failure
+			      common-fail:object-unreachable
+			      common-fail:navigation-low-level-failure
+			      common-fail:navigation-goal-in-collision
+			      CRAM-COMMON-FAILURES:GRIPPER-CLOSED-COMPLETELY
+			      desig:designator-error) (e)
+			   (print "I couldn't pick it up yet")
+			   (roslisp:ros-warn (pp-plans pick-up)
+		                   "Manipulation messed up: ~a~%Retring..."
+		                   e)
+		           (cpl:do-retry grasp-retries
+				(cpl:retry))
+			(roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+			;;;; TODO add navigation plan for going back to starting point
+			(return-from fetching-object "fail")))
+	      
+	      (exe:perform (desig:an action
+		                     (type picking-up)
+		                     (object-pose ?pose)
+		                     (object-size ?object-size)
+		                     (collision-mode :allow-all)))
+		                     ))) ;;;TODO ADD parking arm
+		;;;; check object in hand
+		 ;;(when (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_))
+		   ;;            (progn (print "Yes, I grasps the Object")
+		    ;;                  (setf grasped-object T))
+		    ;;                  (return-from fetching-object "fetch"))
+					(print "fetching plan")
+					 (return-from fetching-object "fetch")
+)
 
 
 ;;;; DELIVER the object to the person/ on the location (?object ?location ?)
@@ -139,20 +175,20 @@
 	
 	
 	;;; check if object is already in hand 	
-	(when (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_))
-		               (progn (print "Yes, I have Object in hand !")
-		               (setf ?deliver-check T)
-		                     ))
+	;;(when (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_))
+	;;	               (progn (print "Yes, I have Object in hand !")
+	;;	               (setf ?deliver-check T)
+	;;	                     ))
 	;;; if object is not in hand fetch it 
-	(when (eq (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_)) nil)
-		               (progn (print "Object is not in hand !.... going to grasp it..."))
+	;;(when (eq (prolog:prolog `(cpoe:object-in-hand ?object :right ?_ ?_)) nil)
+	;;	               (progn (print "Object is not in hand !.... going to grasp it..."))
 
-				(setf ?output-check  (fetching-object ?object :nil :nil))
-					(when (eq ?output-check "fetch")
-						(setf ?deliver-check T))
-					(when (eq ?output-check "fail")
-						(setf ?deliver-check nil)
-						(return-from delivering-object "fail")))	
+	;;			(setf ?output-check  (fetching-object ?object :nil :nil))
+	;;				(when (eq ?output-check "fetch")
+	;;					(setf ?deliver-check T))
+	;;				(when (eq ?output-check "fail")
+	;;					(setf ?deliver-check nil)
+	;;					(return-from delivering-object "fail")))	
 	;;;; find deliver to where or Whom?
 	(if (not(eq ?person nil))
 		(setf ?deliver-to-person T)
@@ -167,12 +203,9 @@
 	(when ?location-check
 		(navigate-to-location ?location-on-fr ?room))
 	
-	
-
-	
 	;;; if deliver check is true 
 	(when ?deliver-check 
-		(when (equ ?deliver-to-person T)	
+		(when (eq ?deliver-to-person T)	
 			;;--->>>>> ADD plan to deliver to the person 
 			;; go to the person
 			;; rise the hand 
@@ -182,8 +215,35 @@
 			(print "deliver to person")
 			(return-from delivering-object  "deliver"))
 		
-		(when (equ ?deliver-to-person nil)
+		(when (eq ?deliver-to-person nil)
 			;;--->>>>> ADD plan to deliver to the location with failure handling
+			
+			;;;;;;;;;;;;;;; FOR TESTING PURPOSE 
+			(setf ?place-pose (make-pose "map" '((1.4154692465230447d0 -0.49576755079049184d0 0.806323621845479d0) (0.0d0 0.0d0 0.0d0 1.0d0))))
+			(setf ?object-height 0.215d0)
+			;;;;;;;;;;;;;;;
+				 (cpl:with-retry-counters ((place-retries 2)) 
+				 (cpl:with-failure-handling
+				      (((or common-fail:navigation-high-level-failure
+				         	common-fail:navigation-low-level-failure
+				         	common-fail:object-undeliverable
+				         	common-fail:manipulation-low-level-failure
+				         	desig:designator-error) (e)
+				            (print "I couldn't place it yet")
+				        (roslisp:ros-warn (pp-plans pick-up)
+						   "Manipulation messed up: ~a~%Retring..."
+						   e)
+					 (cpl:do-retry place-retries
+						(cpl:retry))
+					 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+					 ;;;; TODO add navigation plan for going back to starting point
+						    (return-from delivering-object "fail")))
+					 (exe:perform (desig:an action
+						         (type :placing)
+						         (target-pose ?place-pose)
+						         (object-height ?object-height)
+						         (collision-mode :allow-all)))
+						         ))
 			(print "deliver to location")
 			(return-from delivering-object  "deliver"))
 	)
@@ -197,13 +257,42 @@
 	(if (eq ?object :object) 
 		(setf ?object *previous-object*) ;; for pronoun get the object from buffer
 		(setf ?object (object-to-be *objectname*))) ;; convert object nlp-name to cram-name
-		
+	
+	;;;; find transport to where or Whom?
+	(if (not(eq ?person nil))
+		(setf ?transport-to-person T)
+		(setf ?transport-to-person nil)) ;;; if person then no delivery location needed
+			
 	;;; fetch the object
+	;; check both locations of furniture is given or not
+	(if (and (eq ?object-in-location :nil) (eq ?deliver-location :nil))
+		(setf ?double-locations-check nil)
+		(setf ?double-locations-check T))
+	;; check both locations of room is given or not	
+	(if (and (eq ?object-in-room :nil) (eq ?deliver-room :nil))
+		(setf ?double-rooms-check nil)
+		(setf ?double-rooms-check T))
+	
+	;;;;;; ADD LSIT
+	;;(defparameter *loc-list* (list))	
+	;;(if (not (eq ?object-in-location :nil))
+	;;	(nconc *loc-list* (list :anything))
+	
+	;;)
+	
+	
+	(when ?double-locations-check 
+		(setf ?object-is-at ?object-in-location)
+		(setf ?object-is-to ?deliver-location))
+	(when ?double-rooms-check 
+		(setf ?object-is-at ?object-in-room)
+		(setf ?object-is-to ?deliver-room))	
+		
 		;;TODO locations for fetching (fetching-object ?object ?object-in-location ?object-in-room)	
 	
 	(print "transporation plan")
 	 (return-from transporting-object "transport")
-	)
+)
 
 (defun guide-people(?person ?room1 ?location1)
 	(print "guide plan")
