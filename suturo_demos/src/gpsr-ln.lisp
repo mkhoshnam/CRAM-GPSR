@@ -35,7 +35,7 @@
          
          (sleep 1)
          ;;(su-real:with-hsr-process-modules
-		(navigation-start-point)) ;;; go to the initial position
+		(navigate-to-location :nil :start-point)) ;;; go to the initial position ;;; 9june
 		(cram-talker "DONE") 
          )
          (when (eq *nlplistner-word* :FAIL)
