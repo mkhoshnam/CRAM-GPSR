@@ -140,11 +140,11 @@
 (defvar *gpsr-persons-action* '((:sitting :sitting) ;;;; :nlp-name cram-name
 			(:standing :standing)
 			(:talking)
-			(:lying-down)
-			(:pointing-to-the-left)
-			(:pointing-to-the-right)
-			(:raising-right-arm)
-			(:raising-left-arm)
+			(:lying-down :lying)
+			(:pointing-to-the-left :pointLeft)
+			(:pointing-to-the-right :pointRight)
+			(:raising-right-arm :raiseRight)
+			(:raising-left-arm :raiseLeft)
 			(:waving)))
 
 
