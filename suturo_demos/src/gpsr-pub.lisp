@@ -15,5 +15,17 @@
          (print "recoring start now")
          (call-text-to-speech-action data)))
 
+(defun start-gpsr (topic-name) ;;; 9 june
+    (setf *dialog-subscriber* (roslisp:subscribe topic-name "std_msgs/String" #'startgpsr-callback-function)))
+    
+(defun startgpsr-callback-function (message) ;;9 june
+	(roslisp:with-fields (data) message
+         (print data)
+         (if (eq data "start")
+	     (navigate-to-location :nil :start-point)
+	     )
+	(cram-talker "START")
+			     ))
+
 
 
