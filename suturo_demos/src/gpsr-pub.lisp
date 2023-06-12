@@ -15,7 +15,7 @@
          
          (let ((?tospeak data))
          (print ?tospeak)
-         ;;(call-text-to-speech-action ?tospeak)
+         (call-text-to-speech-action ?tospeak)
          )))
          
 (defun startgpsr (topic-name) ;;; 9 june
@@ -26,7 +26,7 @@
  
          (print (intern (string-upcase (aref commands 0)) :keyword))
          (when (eq (intern (string-upcase (aref commands 0)) :keyword) :START)
-         	;;(navigate-to-location :nil :start-point)
+         	(navigate-to-location :nil :start-point)
 			(print "its start")
 
 	   )))
