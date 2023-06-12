@@ -23,6 +23,8 @@
 	    (setf ?navigation-pose (get-navigation-pose ?room)))
 	(if (eq ?room :nil) ;;;; if room is not given then take the location of the furniture/object
 	    (setf ?navigation-pose (get-navigation-location-near-furniture ?location-nr-furt)))
+	
+	
 	(call-text-to-speech-action "Going to the location")
 	(cpl:with-failure-handling
 	      ((common-fail:navigation-low-level-failure (e)
@@ -34,112 +36,107 @@
 						    (type going)
 						    (target (desig:a location
 								     (pose ?pose)))))))
-	(return-from navigate-to-location "navigate"))
+	(return-from navigate-to-location "navigate")
+	)
  
+
+
 ;;; SEARCHING-object or person  (?object ?person ?location ?location)
 ;; plan depends on  navigation-to-location 
-(defun searching-object (?object ?person ?location-nr-furt ?room)
-  ;;give object/person and give one location at least e.g (searching-object :bottle :nil :couch :nil) or (searching-object :nil :alex :couch :nil)
-  (setf *perceived-object* nil)
+(defun searching-object (?object ?pr-name ?pr-type ?pr-action ?location-nr-furt ?room) ;;;give object/person and give one location at least e.g (searching-object :bottle :nil :couch :nil) or (searching-object :nil :alex :couch :nil) 
+ (setf *perceived-object* nil)
  	
   ;; (setf *personname*  :mehreen)
     ;; (setf *personaction* :sitting)
 
 ;;if looking for object
-  (if (not (eq ?object :nil))
-      (setf ?object-looking-check T) ;;(if object check is T else nil)
-      (setf ?object-looking-check nil))
+(if (not (eq ?object :nil))
+	(setf ?object-looking-check T) ;;(if object check is T else nil)
+	(setf ?object-looking-check nil))
 
 ;;if looking for person
-  (if (not (eq ?person :nil))
-      (setf ?person-looking-check T) ;;(if person check is T else nil)
-      (setf ?person-looking-check nil))
+
+(if (not (eq (get-any-person-feature ?pr-name ?pr-type ?pr-action) :nil))
+	(setf ?person-looking-check T) ;;(if person check is T else nil)
+	(setf ?person-looking-check nil))
 
 
 ;;; go to the location
 
-  (if (and (eq ?location-nr-furt :nil) (eq ?room :nil))
-      (navigate-to-location (get-specific-info-word ?object :default-location-in-room *gpsr-objects*) :nil) ;;; if no location is given get it from gpsr-knowledge where the object is supposed to be
-      (navigate-to-location ?location-nr-furt ?room)) ;;;; else go to the location
-  
-  (call-text-to-speech-action "Trying to perceive the object or person")
-  (let* ((possible-look-directions `(,*forward-upward*
+(if (and (eq ?location-nr-furt :nil) (eq ?room :nil))
+	(navigate-to-location (get-specific-info-word ?object :default-location-in-room *gpsr-objects*) :nil) ;;; if no location is given get it from gpsr-knowledge where the object is supposed to be
+	(navigate-to-location ?location-nr-furt ?room)) ;;;; else go to the location
+
+(call-text-to-speech-action "Trying to perceive the object or person")
+
+ (let* ((possible-look-directions `(,*forward-upward*
                                      ,*left-downward*
                                      ,*left-downward*
                                      ,*forward-downward*
                                      ,*right-downward*
                                      ,*right-downward*
                                      ,*forward-downward*))
-         (?looking-direction (first possible-look-directions)))
+    (?looking-direction (first possible-look-directions)))
     (setf possible-look-directions (cdr possible-look-directions))
 	(cpl:with-failure-handling
-            (((or common-fail:perception-object-not-found
-                  common-fail:perception-low-level-failure
-                  desig:designator-error) (e)
-               (when possible-look-directions
-                 (roslisp:ros-warn  (perception-failure) "Searching messed up: ~a~%Retring by turning head..." e)
-                 (setf ?looking-direction (first possible-look-directions))
-                 (setf possible-look-directions (cdr possible-look-directions))
-                 (exe:perform (desig:an action 
-                                        (type looking)
-                                        (target (desig:a location
-                                                         (pose ?looking-direction)))))
-                 (print "done with perception action")
-                 (cpl:retry))
+			  (((or common-fail:perception-object-not-found
+			  					common-fail:perception-low-level-failure
+			  					desig:designator-error) (e)
+					 (when possible-look-directions
+					 (roslisp:ros-warn  (perception-failure) "Searching messed up: ~a~%Retring by turning head..." e)
+				     (setf ?looking-direction (first possible-look-directions))
+				     (setf possible-look-directions (cdr possible-look-directions))
+				     (exe:perform (desig:an action 
+				                           (type looking)
+				                           (target (desig:a location
+				                                            (pose ?looking-direction)))))
+				     (cpl:retry))
 				     
-               (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
-               (call-text-to-speech-action "Plan fails")
-               (return-from searching-object "fail")
-               
-               ))
+					 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
+					 (call-text-to-speech-action "Plan fails")
+					 (return-from searching-object "fail")
+				                
+			 ))
 		;;; for object
-          (when (eq ?object-looking-check T)
-            (print "...................Looking for object..........................")
-            ;;(call-text-to-speech-action "Looking for object")
-            
-            (let ((?looking-for (object-to-be ?object)))
-              (setf *perceived-object* (exe:perform
-                                        (desig:an action
-                                                  (type detecting)
-                                                  (object (desig:an object
-                                                                    (type ?looking-for))))))
-              (call-text-to-speech-action "Successfully perceived object")
-              (print "done perceiving")
-              )) 
+               (when (eq ?object-looking-check T)
+               (print "...................Looking for object..........................")
+               ;;(call-text-to-speech-action "Looking for object")
+		       
+		       (let ((?looking-for (object-to-be ?object)))
+				   (setf *perceived-object* (exe:perform (desig:an action ;;; save the object designator in global variable
+									   (type detecting)
+									   (object (desig:an object
+									   	(type ?looking-for))))))
+									   	(call-text-to-speech-action "Successfully perceived object"))) 
                
                ;;;; for person    
                (when (eq ?person-looking-check T)
-                 (print "...................Looking for Human..........................")
-                 ;;(call-text-to-speech-action "Looking for Human")
-                 (if (not (eq *personname* :nil))
-                     (setf ?human-name *personname*)
-                     (setf ?human-name nil))
-                 (if (not (eq *personaction* :nil))
-                     (setf ?human-action (get-person-action-name *personaction*))
-                     (setf ?human-action nil))
-                 
-                 (setf *perceived-object* (exe:perform (desig:an action
-                                                                 (type detecting)
-                                                                 (object (desig:an object
-                                                                                   (type :HUMAN)
-                                                                                   (desig:when ?human-name
-                                                                                     (size ?human-name))
-                                                                                   (desig:when ?human-action
-                                                                                     (location ?human-action))
-                                                                                   )))))
-                 (call-text-to-speech-action "Successfully perceived person")
-                 )                
-          
-          
-          (return-from searching-object "search")))) 
- 
+               (print "...................Looking for Human..........................")
+               ;;(call-text-to-speech-action "Looking for Human")
+               	
+               	(let ((?human-name (string-upcase ?pr-name)) (?human-action (string-upcase ?pr-action)))              	
+				   (setf *perceived-object* (exe:perform (desig:an action
+															   (type detecting)
+															   (object (desig:an object
+															   	(type :HUMAN)
+															   		(desig:when ?human-name
+															   				(size ?pr-name))
+															   		(desig:when ?human-action
+															   				(location ?pr-action))
+															   		)))))
+									   	(call-text-to-speech-action "Successfully perceived person"))                
+						       
+						       
+						       (return-from searching-object "search"))
+						       
+						       )) 
+ )
 
 ;;; FETCH the object (?object ?location)
 ;; plan depends on searching plan-->>  navigation-to-location 
 (defun fetching-object (?object ?location-nr-furt ?room)
 
-  (searching-object ?object :nil ?location-nr-furt ?room) ;;; search for the object on the furniture and save object designator in *perceived-object* 
-	
+	(searching-object ?object :nil :nil :nil ?location-nr-furt ?room)
 	;;--->>>>> ADD pickup plan with failure handling and (searching plan save the object designator in global variable ) use  *perceived-object* to get object designator
  (roslisp:with-fields
           ((?pose
@@ -181,43 +178,6 @@
 					 (return-from fetching-object "fetch")
 )
 
-;;;(defun searching-object (?object)
-;; (setf *perceived-object* nil)
-;;(call-text-to-speech-action "Trying to perceive object")
-;; (let* ((possible-look-directions `(,*forward-upward*
-;;                                     ,*left-downward*
-;;                                     ,*right-upward*
-;;                                     ,*forward-downward*))
- ;;        (?looking-direction (first possible-look-directions)))
- ;;   (setf possible-look-directions (cdr possible-look-directions))
-;;	(cpl:with-failure-handling
-;;			  (((or common-fail:perception-object-not-found
-;;			  					desig:designator-error) (e)
-;;					 (when possible-look-directions
-;;					 (roslisp:ros-warn  (perception-failure) "Searching messed up: ~a~%Retring by turning head..." e)
-;;				     (setf ?looking-direction (first possible-look-directions))
-;;				     (setf possible-look-directions (cdr possible-look-directions))
-;;				     (exe:perform (desig:an action 
-;;				                           (type looking)
-;;				                           (target (desig:a location
-;;				                                            (pose ?looking-direction)))))
-;;				     (cpl:retry))
-				     
-				     
-;;					 (roslisp:ros-warn (pp-plans pick-up) "No more retries left..... going back ")
-;;					 ;;; (navigation-start-point) ;;; go back to the start point when fails
-;;					 (return-from searching-object "fail")
-				                
-;;			 ))
-
- ;;               (setf *perceived-object* (exe:perform (desig:an action
-;;						                                (type detecting)
-;;						                                (object (desig:an object
-;;						                   							(type ?object))))))
-;;						                   							(call-text-to-speech-action "Successfully perceived object")
-;;						                   							(return-from searching-object "search"))
-;;	))
-						                   							
 
 
 

@@ -1,4 +1,4 @@
-(in-package :demo)
+(in-package :su-demos)
 (defun cram-talker (command)
   "Periodically print a string message on the /chatter topic"
     (let ((pub (roslisp:advertise "CRAMpub" "std_msgs/String")))
@@ -17,20 +17,25 @@
     
 (defun hsrspeaks-callback-function (message)
 	(roslisp:with-fields (data) message
-         (print data)
-         (call-text-to-speech-action data)))
          
-(defun start-gpsr (topic-name) ;;; 9 june
+         
+         (let ((?tospeak data))
+         (print ?tospeak )
+         ;;(call-text-to-speech-action ?tospeak)
+         )
+         
+         ))
+         
+(defun startgpsr (topic-name) ;;; 9 june
     (setf *start-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'startgpsr-callback-function)))
     
 (defun startgpsr-callback-function (message) ;;9 june
 	(roslisp:with-fields (commands) message
+        (print "yes i am alive")
         (cram-starter "GPSR")
          (print (intern (string-upcase (aref commands 0)) :keyword))
          (when (eq (intern (string-upcase (aref commands 0)) :keyword) :START)
-         	(cram-starter "START")
-         	(print "its start")
          	;;(navigate-to-location :nil :start-point)
-	   )
-	
-			     ))
+         	(print "its start")
+         	(cram-starter "START")
+	   )))

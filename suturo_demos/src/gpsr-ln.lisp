@@ -35,7 +35,7 @@
          
          (sleep 1)
          ;;(su-real:with-hsr-process-modules
-		(navigate-to-location :nil :start-point)) ;;; go to the initial position ;;; 9june
+		(navigation-start-point)) ;;; go to the initial position
 		(cram-talker "DONE") 
          )
          (when (eq *nlplistner-word* :FAIL)
@@ -81,7 +81,7 @@
 			 		(setf *previous-person-action* *personaction*))
 		
    ;;;;; Actions
-  (su-real:with-hsr-process-modules
+ (su-real:with-hsr-process-modules
 
 	 		(when (eq *plan* :navigate)
 			 	(print "Performing navigation ...")
