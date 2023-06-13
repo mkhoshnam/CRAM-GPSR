@@ -2,7 +2,7 @@
 
 
 ;;;; list of plans
-(setf list-of-plans '(:fetch :deliver :search :navigate :transport :guide :follow))
+(setf list-of-plans '(:fetch :deliver :search :navigate :transport :guide :follow :request :nlu_fallback))
 
 
 (defun gpsr-subcribers()
@@ -134,6 +134,10 @@
 				(setf ?output (follow-people *personname* *room1* *fur-location1*)) ;; room or location
 				(print "Following Plan Done ...")
 				(cram-talker ?output)
+				)
+  	 		(when (eq *plan* :nlu_fallback)
+			 	(print "No plan foud ...")
+				(cram-talker "fail")
 				)
 		)
 	 ))
