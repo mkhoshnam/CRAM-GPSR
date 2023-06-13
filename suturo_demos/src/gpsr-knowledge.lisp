@@ -109,11 +109,11 @@
 
 ;;;; location knowledge
 
-(defvar *gpsr-rooms-locations* '((:bedroom :bed :desk :side-table)  ;;;; :room :location1-in-room :location2-in-room ...
-  				     (:living-room :exit :couch :end-table :bookcase)
-  				     (:kitchen :cupboard :storage-table :sink :counter :dishwasher)
-  				     (:dinning-room :dinning-table)
-  				     (:corridor :entrance)))
+(defvar *gpsr-rooms-locations* '((:bedroom :bed :desk :side-table :floor)  ;;;; :room :location1-in-room :location2-in-room ...
+  				     (:living-room :exit :couch :end-table :bookcase :floor)
+  				     (:kitchen :cupboard :storage-table :sink :counter :dishwasher :floor)
+  				     (:dinning-room :dinning-table :floor)
+  				     (:corridor :entrance :floor)))
  
 
 ;;; person 
