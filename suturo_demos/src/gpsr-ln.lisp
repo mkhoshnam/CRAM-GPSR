@@ -2,7 +2,7 @@
 
 
 ;;;; list of plans
-(setf list-of-plans '(:fetch :deliver :search :navigate :transport :guide :follow :request :nlu_fallback))
+(setf list-of-plans '(:fetch :deliver :search :navigate :transport :guide :follow :request :greet :nlu_fallback))
 
 
 (defun gpsr-subcribers()
