@@ -152,7 +152,7 @@
 
 (defvar *gpsr-pronouns* '((:object :objects :it)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
 			(:location :there :here)
-			(:person :people :me :him :her :women :woman :boy :men :man :girl)))
+			(:person :people :me :him :her :women :woman :lady :girl :girls :boy :boys :men :man :child :children)))
 
 
 
@@ -166,7 +166,7 @@
 (defvar *gpsr-navigation-locations* '((:start-point (0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))
 				(:bedroom (0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0)) 
 				(:living-room (0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))
-				(:kitchen (0.1d0 0.1d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))
+				(:kitchen (-0.1d0 0.1d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))
 				(:dinning-room (0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))
 				(:corridor (0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))
 				(:entrance (-0.0d0 0.0d0 0.0d0) (0.0d0 0.0d0 0.0d0 1.0d0))				
@@ -310,7 +310,7 @@
 
 
 (defun get-person-action-name(?person-action-nlp-name)
-	(nth 1 (first (get-info-word :sitting *persons-action*)))
+	(nth 1 (first (get-info-word ?person-action-nlp-name *persons-action*)))
 )
  
 	

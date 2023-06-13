@@ -5,46 +5,49 @@
 (setf list-of-plans '(:fetch :deliver :search :navigate :transport :guide :follow))
 
 
-(defparameter *per-object* nil)
-(defparameter *dialog-subscriber*  nil)
+(defun gpsr-subcribers()
+	(nlplistener "NLPchatter")
+	(planlistener "Planchatter")
+	(hsrtospeak "hsrspeaker"))
+	
+	
+	(defun planlistener (topic-name)
+    (setf *dialog-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'subscriber-callback-function)))
 
-(defparameter *dialog-fluent* (cpl:make-fluent :name :dialog-fluent :value nil))
-
-(defparameter *dialog-subscriber* nil)
-(defparameter *Listner-string* nil)
-
-(defun planlistener (topic-name)
- ; (roslisp:with-ros-node ("listener" :spin t)
-    (setf *dialog-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'subscriber-callback-function))
-    ;)
-)
 ;;;;;;;;;;;;;;;;;;;;;; 27 April
-(defun nlplistener (topic-name)
-  ;(roslisp:with-ros-node ("listener" :spin t)
-    (setf *plan-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'plan-callback-function))
-    ;)
-)
-(defparameter *nlplistner-word* nil)
+(defun nlplistener (topic-name)  
+    (setf *plan-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'plan-callback-function)))
+
+
 (defun plan-callback-function (message)
     
     (roslisp:with-fields (commands) message
+         (defparameter *nlplistner-word* nil)
          
          (setf *input* commands)
          (setf *nlplistner-word* (intern (string-upcase (aref *input* 0)) :keyword))
-         (when (eq *nlplistner-word* :DONE)
          
-         (sleep 1)
-         ;;(su-real:with-hsr-process-modules
-		(navigation-start-point)) ;;; go to the initial position
-		(cram-talker "DONE") 
-         )
-         (when (eq *nlplistner-word* :FAIL)
-		(cram-talker "FAIL")        
-         ;;)
-         
-         (print *nlplistner-word*)
-         ))
+          ;;(sleep 1)
+         (su-real:with-hsr-process-modules
+		     (when (eq *nlplistner-word* :DONE)
 
+					(navigate-to-location :nil :start-point);;; go to the initial position
+						(cram-talker "DONE") 
+		     )
+		     (when (eq *nlplistner-word* :START)
+
+					(navigate-to-location :nil :start-point);;; go to the initial position
+						(cram-talker "STARTING") 
+						(print "GPSR starts")
+		     )
+		     
+		     (when (eq *nlplistner-word* :FAIL)
+				(cram-talker "FAIL"))
+		     
+		     (print *nlplistner-word*)
+         )
+     )
+)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;
 (defparameter *test* nil)
@@ -52,7 +55,7 @@
     (roslisp:with-fields (commands) message
       ;(print commands)
       (setf *test* commands)
-	(print (length *test*))
+	(print *test*)
 	(setf *plan* (intern (string-upcase (aref *test* 0)) :keyword))
 	(setf *objectname* (intern (string-upcase (substitute #\- #\space (aref *test* 1))) :keyword))
 	(setf *objecttype* (intern (string-upcase (aref *test* 2)) :keyword))
@@ -85,7 +88,8 @@
 
 	 		(when (eq *plan* :navigate)
 			 	(print "Performing navigation ...")
-				(setf ?output (naviagte-to-location *fur-location1* *room1*)) ;;; location-in-room or room 
+				;;(setf ?output (naviagte-to-location *fur-location1* *room1*)) ;;; location-in-room or room 
+				(setf ?output (navigate-to-location *fur-location1* *room1*))
 				(print "Navigation Plan Done ...")
 				(cram-talker ?output)
 				)

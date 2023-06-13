@@ -18,16 +18,15 @@
          (call-text-to-speech-action ?tospeak)
          )))
          
-(defun startgpsr (topic-name) ;;; 9 june
-    (setf *start-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'startgpsr-callback-function)))
+;;(defun startgpsr (topic-name) ;;; 9 june
+  ;;  (setf *start-subscriber* (roslisp:subscribe topic-name "gpsr_nlp/nlpCommands" #'startgpsr-callback-function)))
     
-(defun startgpsr-callback-function (message) ;;9 june
-	(roslisp:with-fields (commands) message
+;;(defun startgpsr-callback-function (message) ;;9 june
+	;;(roslisp:with-fields (commands) message
  
-         (print (intern (string-upcase (aref commands 0)) :keyword))
-         (when (eq (intern (string-upcase (aref commands 0)) :keyword) :START)
-         	(navigate-to-location :nil :start-point)
-			(print "its start")
+      ;;   (print (intern (string-upcase (aref commands 0)) :keyword))
+        ;; (when (eq (intern (string-upcase (aref commands 0)) :keyword) :START)
+         ;;	(navigate-to-location :nil :start-point)
+			;;(print "its start")
 
-	   )))
-         
+	  ;; )))
