@@ -104,6 +104,7 @@
                       (:sausages :sausages :food :kitchen :cupboard)
                       (:scrubby :scrubby :cleaningstuff :bedroom :side-table)
                       (:sponge :sponge :cleaningstuff :bedroom :side-table)
+		      (:trash :trash :cleaningstuff :bedroom :side-table)
                       (:tray :tray :containers :living-room :end-table)))
  
 
