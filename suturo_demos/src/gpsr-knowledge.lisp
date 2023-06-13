@@ -152,7 +152,7 @@
 
 (defvar *gpsr-pronouns* '((:object :objects :it)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
 			(:location :there :here)
-			(:person :people :me :him :her :women :woman :lady :girl :girls :boy :boys :men :man :child :children)))
+			(:person :people :me :him :her :women :woman :lady :girl :girls :boy :boys :men :man :child :children :gender :pose)))
 
 
 
