@@ -76,12 +76,14 @@
           (sleep 1)
           
           ;;;; buffer knowledge.. 
-          (if (not (eq *objectname* :it))  ;;;; for buffer knowledege of previous object
-			(setf *previous-object* *objectname*))
+          (when (not (eq *objectname* :it))  ;;;; for buffer knowledege of previous object
+			(setf *previous-objectname* *objectname*)
+		  	(setf *previous-objecttype* *objecttype*))
 			
-		 (if (not (eq (get-pronoun-title *persontype*) :person))
-			 		(setf *previous-person-name* *personname*)
-			 		(setf *previous-person-action* *personaction*))
+	(when (not (eq (get-pronoun-title *persontype*) :person))
+			(setf *previous-personname* *personname*)
+			(setf *previous-personaction* *personaction*)
+			(setf *previous-persontype* *persontype*))
 		
    ;;;;; Actions
  (su-real:with-hsr-process-modules
