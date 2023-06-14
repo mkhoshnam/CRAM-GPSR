@@ -42,7 +42,7 @@
 
 
 ;;; SEARCHING-object or person  (?object ?person ?location ?location)
-;; plan depends on  navigation-to-location 
+;; plan depends on  navigation-to-location  (14 jn)
 (defun searching-object (?object ?obj-type ?pr-name ?pr-type ?pr-action ?location-nr-furt ?room) ;;;give object/person and give one location at least 
  	
   ;; (setf *personname*  :mehreen)
