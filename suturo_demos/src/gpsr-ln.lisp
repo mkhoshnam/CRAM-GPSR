@@ -80,7 +80,7 @@
 			(setf *previous-objectname* *objectname*)
 		  	(setf *previous-objecttype* *objecttype*))
 			
-	(when (not (eq (get-pronoun-title *persontype*) :person))
+	(when (eq (check-person-pronoun *persontype*) T)
 			(setf *previous-personname* *personname*)
 			(setf *previous-personaction* *personaction*)
 			(setf *previous-persontype* *persontype*))
