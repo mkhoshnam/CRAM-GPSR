@@ -140,20 +140,45 @@
 ;;; person actions
 (defvar *gpsr-persons-action* '((:sitting :sitting) ;;;; :nlp-name cram-name
 			(:standing :standing)
-			(:talking)
+			(:talking :talking)
 			(:lying-down :lying)
 			(:pointing-to-the-left :pointLeft)
 			(:pointing-to-the-right :pointRight)
 			(:raising-right-arm :raiseRight)
 			(:raising-left-arm :raiseLeft)
-			(:waving)))
+			(:waving :waving)))
 
 
 ;;;; nlp personal pronouns mapping with cram
 
 (defvar *gpsr-pronouns* '((:object :objects :it)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
 			(:location :there :here)
-			(:person :people :me :him :her :women :woman :lady :girl :girls :boy :boys :men :man :child :children :gender :pose)))
+			(:person :people :me :him :her :female :women :woman :lady :girl :girls :boy :boys :male :men :man :child :children)))
+
+(defvar *gpsr-attributes* '((:heavy)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
+			    (:heaviest)
+			    (:small)
+			    (:smallest)
+			    (:large)
+			    (:largest)
+			    (:big)
+			    (:biggest)
+			    (:tall)
+			    (:tallest)
+			    (:younger)
+			    (:youngest)
+			    (:older)
+			    (:oldest)
+			    (:fattest)
+			    (:fat)
+			    (:yourself)
+			    (:left)
+			    (:right)
+			    (:top)
+			    (:bottom)
+			    (:gender)
+			    (:pose)
+			    ))
 
 
 
