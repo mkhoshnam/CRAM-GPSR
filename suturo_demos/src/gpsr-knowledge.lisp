@@ -153,7 +153,7 @@
 
 (defvar *gpsr-pronouns* '((:object :objects :it)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
 			(:location :there :here)
-			(:person :people :me :him :her :female :women :woman :lady :girl :girls :boy :boys :male :men :man :child :children)))
+			(:person :me :him :her :them :they)))
 
 (defvar *gpsr-attributes* '((:heavy)  ;;;; :title :per-pronoun1 :per-pronoun2 ...
 			    (:heaviest)
@@ -179,9 +179,6 @@
 			    (:gender)
 			    (:pose)
 			    ))
-
-
-
 ;;;; numbers
 
 (defvar *nlp-numbers* '(:one :two :three :four :five :six :seven :eight :nine :ten))
@@ -336,6 +333,11 @@
 	(nth 0 (first (get-info-word ?pronoun *gpsr-pronouns*)))
 )
 
+(defun check-person-pronoun(?pronoun)
+	(let ((?searching-list (cdr (first (get-info-word ?pronoun *gpsr-pronouns*)))))
+	     (if (member ?pronoun ?searching-list)
+		 (return-from  check-person-pronoun T)
+		 (return-from  check-person-pronoun nil))))
 
 (defun get-person-action-name(?person-action-nlp-name)
 	(nth 1 (first (get-info-word ?person-action-nlp-name *persons-action*)))
