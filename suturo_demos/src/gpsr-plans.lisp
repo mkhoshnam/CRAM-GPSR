@@ -43,8 +43,7 @@
 
 ;;; SEARCHING-object or person  (?object ?person ?location ?location)
 ;; plan depends on  navigation-to-location 
-(defun searching-object (?object ?pr-name ?pr-type ?pr-action ?location-nr-furt ?room) ;;;give object/person and give one location at least e.g (searching-object :bottle :nil :couch :nil) or (searching-object :nil :alex :couch :nil) 
- (setf *perceived-object* nil)
+(defun searching-object (?object ?obj-type ?pr-name ?pr-type ?pr-action ?location-nr-furt ?room) ;;;give object/person and give one location at least 
  	
   ;; (setf *personname*  :mehreen)
     ;; (setf *personaction* :sitting)
