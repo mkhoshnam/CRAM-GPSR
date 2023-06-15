@@ -30,5 +30,4 @@ on the emac first you have to load the packages that we use and open the rosnode
 (roslisp-utilities:startup-ros)
 ```
 
-We have some main plan that are used in every gpsr task `Navigation-to-location`,`searching`,`Fetch`,`deliver-to-location`,`Transport-to-location`,`Counting`,`Describing`,`guiding` and `Foloowing` 
-
+We have some main plan that are used in every gpsr task `Navigation-to-location`,`searching`,`Fetch`,`deliver-to-location`,`Transport-to-location`,`Counting`,`Describing`,`guiding` and `Following`. You can find all of these plans inside the gpsr-plan.lisp file in the suturo-demo folder. There also some other plans and parameters that called inside of these palns also you need to load them before doing any task. Find these plans in the subplan.lisp file in the suturo-demo consists of some looking direction parameters and some plans. 
