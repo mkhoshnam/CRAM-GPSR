@@ -17,3 +17,7 @@ In another terminal and after only source it to hsr run the following
   source SUTURO_WSS/perception_ws/devel/setup.bash 
   rosrun robokudo main.py _ae=demo_robocup _ros_pkg=suturo_rk_robocup
   ``` 
+open another terminal open the emac
+  ```
+  roslisp_repl
+  ``` 
