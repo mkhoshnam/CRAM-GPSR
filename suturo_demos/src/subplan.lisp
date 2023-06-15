@@ -49,7 +49,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
     
 
-(defun find-it-1 (x)
+(defun find-it-1 (?object ?object-type ?object-atribute)
     (setf *perceived-object* nil)
     (let ((?looking-direction *left-downward*))
       (cpl:par
@@ -77,7 +77,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-it-2 (x)
+(defun find-it-2 (?object ?object-type ?object-atribute)
 
     (let ((?looking-direction *left-upward*))
       (cpl:par
@@ -107,7 +107,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-it-3 (x)
+(defun find-it-3 (?object ?object-type ?object-atribute)
     (let ((?looking-direction *right-downward*))
       (cpl:par
         (exe:perform (desig:an action
@@ -135,7 +135,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-it-4 (x)
+(defun find-it-4 (?object ?object-type ?object-atribute)
     (let ((?looking-direction *right-upward*))
       (cpl:par
         (exe:perform (desig:an action
@@ -163,7 +163,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-it-5 (x)
+(defun find-it-5 (?object ?object-type ?object-atribute)
     (let ((?looking-direction *forward-downward*))
       (cpl:par
         (exe:perform (desig:an action
@@ -192,7 +192,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-it-6 (x)
+(defun find-it-6 (?object ?object-type ?object-atribute)
     (let ((?looking-direction *forward-upward*))
       (cpl:par
         (exe:perform (desig:an action
@@ -218,7 +218,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
       
       
       
-(defun find-human-1 (x)
+(defun find-human-1 (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (let ((?looking-direction *left-downward*))
         (cpl:par
@@ -248,7 +248,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
         
         
         
-(defun find-human-2 (x)
+(defun find-human-2 (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (let ((?looking-direction *left-upward*))
         (cpl:par
@@ -281,7 +281,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-human-3 (x)
+(defun find-human-3 (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (let ((?looking-direction *right-downward*))
         (cpl:par
@@ -311,7 +311,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-human-4 (x)
+(defun find-human-4 (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (let ((?looking-direction *right-upward*))
         (cpl:par
@@ -342,7 +342,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-human-5 (x)
+(defun find-human-5 (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (let ((?looking-direction *forward-downward*))
         (cpl:par
@@ -373,7 +373,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-human-6 (x)
+(defun find-human-6 (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (let ((?looking-direction *forward-upward*))
         (cpl:par
@@ -404,7 +404,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun find-object-loop (x)
+(defun find-object-loop (?object ?object-type ?object-atribut)
   (let* ((find-functions '(find-it-1 find-it-1 find-it-2 find-it-2 find-it-3 find-it-3 find-it-4 find-it-4 find-it-5 find-it-5 find-it-6 find-it-6))
          (current-function (car find-functions)))
     (loop until (or (not (eq perceived-object nil)) (null find-functions))
@@ -414,7 +414,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
           (setq current-function (car find-functions)))))
           
           
-(defun find-person-loop (x)
+(defun find-person-loop (?person ?person-name ?person-action)
   (let* ((find-functions '(find-human-1 find-human-1 find-human-2 find-human-2 find-human-3 find-human-3 find-human-4 find-human-4 find-human-5 find-human-5 find-human-6 find-human-6))
          (current-function (car find-functions)))
     (loop until (or (not (eq perceived-object nil)) (null find-functions))
@@ -426,7 +426,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
           
                  
                                                              
-(defun find-object (?object)
+(defun find-object (?object ?object-type ?object-atribute)
       (setf *perceived-object* nil)
       (su-real:with-hsr-process-modules
           
@@ -451,7 +451,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
           
           
           
-(defun find-person (?person)
+(defun find-person (?person ?person-name ?person-action)
       (setf *perceived-person* nil)
       (su-real:with-hsr-process-modules
           
