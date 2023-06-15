@@ -30,4 +30,5 @@ on the emac first you have to load the packages that we use and open the rosnode
 (roslisp-utilities:startup-ros)
 ```
 
+We have some main plan that are used in every gpsr task `Navigation-to-location`,`searching`,`Fetch`,`deliver-to-location`,`Transport-to-location`,`Counting`,`Describing`,`guiding` and `Foloowing` 
 
