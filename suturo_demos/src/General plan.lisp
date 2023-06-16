@@ -26,7 +26,7 @@
             common-fail:navigation-low-level-failure
             CRAM-COMMON-FAILURES:GRIPPER-CLOSED-COMPLETELY) (e))
        (print "I didn't reach yet")
-       (return-from navigattion-to-location "fail")))
+       (return-from navigattion-to-location "fail"))
 
     (if ?room
       (exe:perform (desig:an action
@@ -39,7 +39,7 @@
                                (target (desig:a location
                                                 (pose ?furniture-location))))))
 
-    (cpl:fail (make-instance 'common-fail:navigation-low-level-failure))
+    (cpl:fail (make-instance 'common-fail:navigation-low-level-failure)))
   "navigate"))
   
 
