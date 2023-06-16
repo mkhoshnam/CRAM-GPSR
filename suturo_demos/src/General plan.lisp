@@ -1,24 +1,4 @@
 (defun navigattion-to-location (?furniture-location ?room)
-      (su-real:with-hsr-process-modules
-         (cpl:with-failure-handling
-                (((or common-fail:navigation-high-level-failure
-                      CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND
-                      common-fail:navigation-low-level-failure
-                      CRAM-COMMON-FAILURES:GRIPPER-CLOSED-COMPLETELY) (e)
-                   (print "I didn't reach yet")
-                   (return-from navigattion-to-location "fail")))
-            (let* ((?pose ?location))
-                     (exe:perform (desig:an action
-                                            (type going)
-                                            (target (desig:a location
-                                                             (pose ?pose))))))
-          (cpl:fail (make-instance 'common-fail:navigation-low-level-failure)))
-          (return-from navigattion-to-location "navigate")))
-          
-          
-          
-          
-(defun navigattion-to-location (?furniture-location ?room)
   (su-real:with-hsr-process-modules
     (cpl:with-failure-handling
       (((or common-fail:navigation-high-level-failure
