@@ -50,26 +50,31 @@ You just to put the last function (find-object-loop) at any plan that you want t
     
 
 (defun find-it-1 (?object ?object-type ?object-atribute)
-    (setf *perceived-object* nil)
-    (let ((?looking-direction *left-downward*))
-      (cpl:par
-        (exe:perform (desig:an action
-                               (type looking)
-                               (target (desig:a location 
-                                                (pose ?looking-direction)))))
-        
-        ;; try to perceive it.
-        (cpl:with-failure-handling
-            ((cram-common-failures:perception-object-not-found (e)
-               ;; Try different look directions until there is none left.
-               (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
+  (setf *perceived-object* nil)
+  (let ((?looking-direction *left-downward*))
+    (cpl:par
+      (exe:perform (desig:an action
+                             (type looking)
+                             (target (desig:a location 
+                                              (pose ?looking-direction)))))
+      
+      ;; try to perceive it.
+      (cpl:with-failure-handling
+          ((cram-common-failures:perception-object-not-found (e)
+             ;; Try different look directions until there is none left.
+             (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
-               (return)))
-         (let ((?object x))
+             (return)))
+        (when ?object
           (setf *perceived-object* (exe:perform (an action
-                                                (type detecting)
-                                                (object (an object
-                                                            (type ?object)))))))))
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object)))))))
+        (when ?object-type
+          (setf *perceived-object* (exe:perform (an action
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object-type)))))))))
 
       (values *perceived-object*)))
 
@@ -78,7 +83,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 (defun find-it-2 (?object ?object-type ?object-atribute)
-
     (let ((?looking-direction *left-upward*))
       (cpl:par
         (exe:perform (desig:an action
@@ -93,11 +97,16 @@ You just to put the last function (find-object-loop) at any plan that you want t
                (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                (return)))
-         (let ((?object x))
+          (when ?object
           (setf *perceived-object* (exe:perform (an action
-                                                (type detecting)
-                                                (object (an object
-                                                            (type ?object)))))))))
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object)))))))
+        (when ?object-type
+          (setf *perceived-object* (exe:perform (an action
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object-type)))))))))
 
 
       (values *perceived-object*)))
@@ -122,11 +131,16 @@ You just to put the last function (find-object-loop) at any plan that you want t
                (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                (return)))
-         (let ((?object x))
+          (when ?object
           (setf *perceived-object* (exe:perform (an action
-                                                (type detecting)
-                                                (object (an object
-                                                            (type ?object)))))))))
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object)))))))
+        (when ?object-type
+          (setf *perceived-object* (exe:perform (an action
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object-type)))))))))
 
       (values *perceived-object*)))
 
@@ -150,11 +164,16 @@ You just to put the last function (find-object-loop) at any plan that you want t
                (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                (return)))
-         (let ((?object x))
+          (when ?object
           (setf *perceived-object* (exe:perform (an action
-                                                (type detecting)
-                                                (object (an object
-                                                            (type ?object)))))))))
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object)))))))
+        (when ?object-type
+          (setf *perceived-object* (exe:perform (an action
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object-type)))))))))
 
       (values *perceived-object*)))
 
@@ -178,11 +197,16 @@ You just to put the last function (find-object-loop) at any plan that you want t
                (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                (return)))
-         (let ((?object x))
+          (when ?object
           (setf *perceived-object* (exe:perform (an action
-                                                (type detecting)
-                                                (object (an object
-                                                            (type ?object)))))))))
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object)))))))
+        (when ?object-type
+          (setf *perceived-object* (exe:perform (an action
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object-type)))))))))
       (values *perceived-object*)))
 
 
@@ -207,11 +231,16 @@ You just to put the last function (find-object-loop) at any plan that you want t
                (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                (return)))
-         (let ((?object x))
+          (when ?object
           (setf *perceived-object* (exe:perform (an action
-                                                (type detecting)
-                                                (object (an object
-                                                            (type ?object)))))))))
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object)))))))
+        (when ?object-type
+          (setf *perceived-object* (exe:perform (an action
+                                                    (type detecting)
+                                                    (object (an object
+                                                                (type ?object-type)))))))))
       (values *perceived-object*)))
       
       
@@ -234,7 +263,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
                  (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                  (return)))
-            (let ((?object x))
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
@@ -242,7 +270,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                                   (desig:when ?human-name
                                                                     (size ?human-name))
                                                                   (desig:when ?human-action
-                                                                    (location ?human-action))))))))))
+                                                                    (location ?human-action)))))))))
 
         (values *perceived-person*)))
         
@@ -264,7 +292,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
                  (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                  (return)))
-            (let ((?object x))
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
@@ -272,7 +299,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                                   (desig:when ?human-name
                                                                     (size ?human-name))
                                                                   (desig:when ?human-action
-                                                                    (location ?human-action))))))))))
+                                                                    (location ?human-action)))))))))
 
         (values *perceived-person*)))        
 
@@ -297,7 +324,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
                  (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                  (return)))
-            (let ((?object x))
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
@@ -305,7 +331,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                                   (desig:when ?human-name
                                                                     (size ?human-name))
                                                                   (desig:when ?human-action
-                                                                    (location ?human-action))))))))))
+                                                                    (location ?human-action)))))))))
 
         (values *perceived-person*)))
 
@@ -327,7 +353,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
                  (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                  (return)))
-            (let ((?object x))
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
@@ -335,7 +360,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                                   (desig:when ?human-name
                                                                     (size ?human-name))
                                                                   (desig:when ?human-action
-                                                                    (location ?human-action))))))))))
+                                                                    (location ?human-action)))))))))
 
         (values *perceived-person*)))
 
@@ -358,7 +383,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
                  (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                  (return)))
-            (let ((?object x))
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
@@ -366,7 +390,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                                   (desig:when ?human-name
                                                                     (size ?human-name))
                                                                   (desig:when ?human-action
-                                                                    (location ?human-action))))))))))
+                                                                    (location ?human-action)))))))))
 
         (values *perceived-person*)))
 
@@ -389,7 +413,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
                  (roslisp:ros-warn (perception-failure) "~a~%Detection-failed." e)
 
                  (return)))
-            (let ((?object x))
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
@@ -397,7 +420,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                                   (desig:when ?human-name
                                                                     (size ?human-name))
                                                                   (desig:when ?human-action
-                                                                    (location ?human-action))))))))))
+                                                                    (location ?human-action)))))))))
 
         (values *perceived-person*)))
 
@@ -473,7 +496,6 @@ You just to put the last function (find-object-loop) at any plan that you want t
           
           (values *location*)
           (return-from find-object "find-person"))))
-          
           
           
           
