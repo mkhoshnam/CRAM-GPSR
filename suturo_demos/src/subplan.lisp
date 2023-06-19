@@ -444,7 +444,22 @@ You just to put the last function (find-object-loop) at any plan that you want t
           do
              (funcall current-function x)
              (setf find-functions (cdr find-functions))
-             (setq current-function (car find-functions)))))          
+             (setq current-function (car find-functions))
+             (when *perceived-object*                       
+               (setf *person-loc-x* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
+               (setf *person-loc-y* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
+               
+               (setf *xp-robot* (cl-transforms:x (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
+               (setf *yp-robot* (cl-transforms:y (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
+
+               (defparameter *location*
+                 (cl-transforms-stamped:make-pose-stamped
+                  "base_footprint" 0.0
+                  (cl-transforms:make-3d-vector *xp-robot* *person-loc-y* 0)
+                  (cl-transforms:make-identity-rotation)))
+
+               (values *location*)
+               (return-from find-object "find-object")))))          
           
           
                  
