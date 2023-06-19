@@ -478,7 +478,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
       
       (find-person-loop ?person ?person-name ?person-action) 
     (when *perceived-person*                       
-      (setf *object-loc-x* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-eprson*))))
+      (setf *object-loc-x* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
       (setf *object-loc-y* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
       (setf *xp-robot* (cl-transforms:x (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
       (setf *yp-robot* (cl-transforms:y (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
