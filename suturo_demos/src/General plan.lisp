@@ -6,7 +6,7 @@
             common-fail:navigation-low-level-failure
             CRAM-COMMON-FAILURES:GRIPPER-CLOSED-COMPLETELY) (e))
        (print "I didn't reach yet")
-       (return-from navigattion-to-location "fail"))
+       (return-from navigation-to-location "fail"))
 
     (if ?room
       (exe:perform (desig:an action
