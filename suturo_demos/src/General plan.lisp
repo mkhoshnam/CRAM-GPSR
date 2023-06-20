@@ -1,4 +1,4 @@
-(defun navigattion-to-location (?furniture-location ?room)
+(defun navigation-to-location (?furniture-location ?room)
   (su-real:with-hsr-process-modules
     (cpl:with-failure-handling
       (((or common-fail:navigation-high-level-failure
@@ -29,7 +29,7 @@
   (setf *perceived-object* nil)
   (setf *perceived-person* nil)
   
-  (navigattion-to-location ?furniture-location ?room) 
+  (navigation-to-location ?furniture-location ?room) 
   
   (when ?object
     (find-object-loop ?object ?object-type ?object-atribute)
@@ -84,9 +84,9 @@
 (defun deliver-to-location (?object ?object-type ?object-attribute ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2 ?num) 
   (su-real:with-hsr-process-modules
       (if (not (eq *grasping* t)) 
-          (progn (navigattion-to-location ?furniture-location ?room)
+          (progn (navigation-to-location ?furniture-location ?room)
                  (fetch ?object ?object-type ?object-attribute ?furniture-location))
-          (progn (navigattion-to-location ?furniture-location ?room)        
+          (progn (navigation-to-location ?furniture-location ?room)        
                  (let*
                      (
                       (?place-pose (create-pose (list "map" (list 1.4154692465230447d0 -0.49576755079049184d0 0.806323621845479d0) (list 0 0 0 1))))
@@ -118,7 +118,7 @@
           (if (not (eq *grasping* t))
               (fetch ?object ?object-type ?object-attribute ?furniture-location-1 ?room-1)
               (progn
-                (navigattion-to-location ?furniture-location-2 ?room-2)
+                (navigation-to-location ?furniture-location-2 ?room-2)
                 (let*
                     (
                      (?place-pose (create-pose (list "map" (list 1.4154692465230447d0 -0.49576755079049184d0 0.806323621845479d0) (list 0 0 0 1))))
@@ -181,7 +181,7 @@
 
 (defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?target ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
 
-  (navigattion-to-location ?furniture-location-1 ?room-1)
+  (navigation-to-location ?furniture-location-1 ?room-1)
   (when ?person  
     (if (not (eq *personname* :nil))
         (setf ?human-name *personname*)
@@ -195,7 +195,7 @@
     (when (and ?person (eq *perceived-person* nil))
       (return-from guiding "fail")))
   
-  (navigattion-to-location ?furniture-location-2 ?room-2))                                    
+  (navigation-to-location ?furniture-location-2 ?room-2))                                   
           
           
    
