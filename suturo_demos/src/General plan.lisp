@@ -179,9 +179,9 @@
    
       
 
-(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?target ?furniture-location ?room)
+(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?target ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
 
-  (navigattion-to-location ?furniture-location ?room)
+  (navigattion-to-location ?furniture-location-1 ?room-1)
   (when ?person  
     (if (not (eq *personname* :nil))
         (setf ?human-name *personname*)
@@ -195,7 +195,7 @@
     (when (and ?person (eq *perceived-person* nil))
       (return-from guiding "fail")))
   
-  (navigattion-to-location ?furniture-location ?room))                                   
+  (navigattion-to-location ?furniture-location-2 ?room-2))                                    
           
           
    
