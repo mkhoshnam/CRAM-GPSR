@@ -149,7 +149,7 @@
    
       
 
-(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?target ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
+(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
 
   (navigation-to-location ?furniture-location-1 ?room-1)
   (when ?person  
