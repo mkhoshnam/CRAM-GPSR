@@ -75,8 +75,8 @@
                                (object-size ?object-size)
                                (collision-mode :allow-all)))
         (cpl:fail (make-instance 'common-fail:navigation-low-level-failure))
-        (setf *grasping* t))
-      (return-from fetch "fetch"))))
+        (setf *grasping* t)
+      (return-from fetch "fetch")))))
       
       
       
