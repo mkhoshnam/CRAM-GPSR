@@ -115,8 +115,6 @@
 
 (defun transport-to-location (?object ?person ?object-type ?object-attribute ?person-name ?person-action ?furniture-location 
                               ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
-  
-  (fetch ?object ?object-type ?object-attribute ?furniture-location ?location)
   (deliver-to-location ?object ?location ?object-type ?object-attribute ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
   (return-from transport-to-location "transport"))                                  
                                  
