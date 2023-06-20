@@ -192,7 +192,7 @@
 
     (find-person-loop ?person ?person-name ?person-action)
     
-    (when (and ?person (eq *perceived-person* nil))
+    (when (and (or ?person? ?person-action) (eq *perceived-person* nil))
       (return-from guiding "fail")))
   
   (navigation-to-location ?furniture-location-2 ?room-2))                                   
