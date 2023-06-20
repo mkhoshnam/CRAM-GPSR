@@ -147,7 +147,7 @@
    
       
 
-(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?target)
+(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?target ?furniture-location ?room)
 
   (navigattion-to-location ?furniture-location ?room)
   (when ?person  
@@ -163,7 +163,7 @@
     (when (and ?person (eq *perceived-person* nil))
       (return-from guiding "fail")))
   
-  (navigattion-to-location ?target))                                   
+  (navigattion-to-location ?furniture-location ?room))                                   
           
           
    
