@@ -82,7 +82,7 @@
       
 (defun deliver-to-location (?object ?object-type ?object-attribute ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2 ?num) 
   (su-real:with-hsr-process-modules
-      (if (not (eq *grasping* t)) ;; To do >> check if the object is already grasped
+      (if (not (eq *grasping* t)) 
           (progn (navigattion-to-location ?furniture-location ?room)
                  (fetch ?object ?object-type ?object-attribute ?furniture-location))
           (progn (navigattion-to-location ?furniture-location ?room)        
