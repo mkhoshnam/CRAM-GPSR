@@ -45,7 +45,7 @@
           (setf ?human-action (get-person-action-name ?person-action))
           (setf ?human-action nil))
           
-      (find-person ?person ?person-name ?person-action)
+      (find-person-loop ?person ?person-name ?person-action)
       (when (and ?person (eq *perceived-person* nil))
         (return-from searching "fail"))))           
           
