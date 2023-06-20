@@ -149,23 +149,21 @@
    
       
 
-(defun guiding (?furniture-location ?person ?person-type ?person-action ?room ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
+(defun guiding (?furniture-location ?person ?person-name ?person-action ?room ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
 
   (navigation-to-location ?furniture-location-1 ?room-1)
   (when ?person  
-    (if (not (eq *personname* :nil))
-        (setf ?human-name *personname*)
+    (if (not (eq ?person-name :nil))
+        (setf ?human-name ?person-name)
         (setf ?human-name nil))
-    (if (not (eq *personaction* :nil))
-        (setf ?human-action (get-person-action-name *personaction*))
+    (if (not (eq ?person-action :nil))
+        (setf ?human-action (get-person-action-name ?person-action))
         (setf ?human-action nil))
 
     (find-person-loop ?person ?person-name ?person-action)
-    
-    (when (and (or ?person? ?person-action) (eq *perceived-person* nil))
+    (when (and (or ?person? ?person-type ?person-action) (eq *perceived-person* nil))
       (return-from guiding "fail")))
-  
-  (navigation-to-location ?furniture-location-2 ?room-2))                                   
+  (navigation-to-location ?furniture-location-2 ?room-2))                                     
           
           
    
