@@ -175,7 +175,6 @@
   (su-real:with-hsr-process-modules
       (searching ?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room)
     (loop until condition-stop do
-      (find-person-loop ?person)
       (when *perceived-person*                       
         (setf *person-loc-x* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform *perceived-person*))))
         (setf *person-loc-y* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform *perceived-person*))))
