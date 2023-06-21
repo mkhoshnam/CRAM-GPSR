@@ -53,9 +53,9 @@
           
           
           
-(defun fetch (?object ?object-type ?object-attribute ?furniture-location ?room)
+(defun fetch (?object ?person ?object-type ?object-atribute ?room ?location ?person-name ?person-action ?furniture-location)
   (setf *grasping* nil)
-  (searching ?object ?person ?object-type ?object-atribute ?room ?location  ?person-name ?person-action ?furniture-location)
+  (searching ?object ?person ?object-type ?object-atribute ?room ?location ?person-name ?person-action ?furniture-location)
   (roslisp:with-fields
       ((?pose
         (cram-designators::pose cram-designators:data)))
