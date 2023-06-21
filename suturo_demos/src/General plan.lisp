@@ -79,6 +79,36 @@
         (setf *grasping* t)
       (return-from fetch "fetch")))))
       
+      
+      
+(defun deliver-to-location (?object ?object-type ?object-attribute ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2 ?num) 
+  (su-real:with-hsr-process-modules
+      (if (not (eq *grasping* t)) 
+          (progn (navigation-to-location ?furniture-location ?room)
+                 (fetch ?object ?object-type ?object-attribute ?furniture-location))
+          (progn (navigation-to-location ?furniture-location ?room)        
+                 (let*
+                     (
+                      (?place-pose (create-pose (list "map" (list 1.4154692465230447d0 -0.49576755079049184d0 0.806323621845479d0) (list 0 0 0 1))))
+                      (?object-height 0.215d0)
+                      )
+                   (cpl:with-failure-handling
+                       (((or common-fail:navigation-high-level-failure
+                             CRAM-COMMON-FAILURES:PERCEPTION-OBJECT-NOT-FOUND
+                             common-fail:navigation-low-level-failure
+                             CRAM-COMMON-FAILURES:GRIPPER-CLOSED-COMPLETELY) (e)
+                          (print "I couldn't pick it up yet")
+                          (return-from delivery "fail")))
+                     (exe:perform (desig:an action
+                                            (type :placing)
+                                            (target-pose ?place-pose)
+                                            (object-height ?object-height)
+                                            (collision-mode :allow-all)))
+                     (cpl:fail (make-instance 'common-fail:navigation-low-level-failure)))
+                   (return-from deliver "deliver"))))))
+                                 
+                                 
+                                 
                                  
                                  
 (defun deliver-to-location (?object ?location ?object-type ?object-attribute ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2 ?num)
@@ -116,7 +146,6 @@
 
 (defun transport-to-location (?object ?person ?object-type ?object-attribute ?person-name ?person-action ?furniture-location 
                               ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
-  
   (deliver-to-location ?object ?location ?object-type ?object-attribute ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
   (return-from transport-to-location "transport"))                                  
                                  
@@ -149,7 +178,6 @@
       
 
 (defun guiding (?furniture-location ?person ?person-name ?person-action ?room ?furniture-location-1 ?room-1 ?furniture-location-2 ?room-2)
-
   (navigation-to-location ?furniture-location-1 ?room-1)
   (when ?person  
     (if (not (eq ?person-name :nil))
