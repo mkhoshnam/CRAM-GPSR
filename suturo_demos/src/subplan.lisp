@@ -561,7 +561,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun give-object (?object ?object-type ?object-atribute ?dir)
+(defun give-object (?object ?object-type ?object-atribute ?dir)  ;;dir  means direction, For examle the most left apple
   (let ((object-pos-list (list)))
     (su-real:with-hsr-process-modules
       (find-it-1 ?object ?object-type ?object-atribute)
