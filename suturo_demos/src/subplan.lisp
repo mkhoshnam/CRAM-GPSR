@@ -497,8 +497,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
       (setf *object-loc-y* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
       (setf *xp-robot* (cl-transforms:x (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
       (setf *yp-robot* (cl-transforms:y (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
-      
-      
+
       (defparameter *location*
         (cl-transforms-stamped:make-pose-stamped
          "base_footprint" 0.0
@@ -507,6 +506,104 @@ You just to put the last function (find-object-loop) at any plan that you want t
       
       (values *location*)
       (return-from find-object "find-person"))))
+
+
+
+
+
+(defun count-people-gender (?person ?person-name ?person-action)
+  (defparameter man 0)
+  (defparameter woman 0)
+  
+  (su-real:with-hsr-process-modules
+    (setf number-object 0)
+    
+    (find-it-1 ?person ?person-name ?person-action)
+    (when *perceived-object*
+      (if (eq (get-gender *perceived-object*) 'man)
+          (incf man)
+          (incf woman)))
+    
+    (find-it-2 ?person ?person-name ?person-action)
+    (when *perceived-object*
+      (if (eq (get-gender *perceived-object*) 'man)
+          (incf man)
+          (incf woman)))
+    
+    (find-it-3 ?person ?person-name ?person-action)
+    (when *perceived-object*
+      (if (eq (get-gender *perceived-object*) 'man)
+          (incf man)
+          (incf woman)))
+    
+    (find-it-4 ?person ?person-name ?person-action)
+    (when *perceived-object*
+      (if (eq (get-gender *perceived-object*) 'man)
+          (incf man)
+          (incf woman)))
+    
+    (find-it-5 ?person ?person-name ?person-action)
+    (when *perceived-object*
+      (if (eq (get-gender *perceived-object*) 'man)
+          (incf man)
+          (incf woman)))
+    
+    (find-it-6 ?person ?person-name ?person-action)
+    (when *perceived-object*
+      (if (eq (get-gender *perceived-object*) 'man)
+          (incf man)
+          (incf woman)))
+    
+    (format t "The number of men: ~a~%" man)
+    (format t "The number of men and women: ~a~%" (+ man women))
+    (format t "The number of women: ~a~%" woman)))
+              
+
+
+
+(defun give-object (?object ?object-type ?object-atribute ?dir)
+  (let ((object-pos-list (list)))
+    (su-real:with-hsr-process-modules
+      (find-it-1 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (push (list (list 'x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+                     (list 'y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))))
+              object-pos-list)
+      
+      (find-it-2 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (push (list (list 'x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+                     (list 'y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))))
+              object-pos-list)
+      
+      (find-it-3 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (push (list (list 'x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+                     (list 'y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))))
+              object-pos-list)
+      
+      (find-it-4 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (push (list (list 'x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+                     (list 'y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))))
+              object-pos-list)
+      
+      (find-it-5 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (push (list (list 'x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+                     (list 'y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))))
+              object-pos-list)
+      
+      (find-it-6 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (push (list (list 'x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+                     (list 'y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))))
+              object-pos-list)
+
+    (let ((sorted-positions (sort object-pos-list #'(lambda (a b) (< (car a) (car b))))))
+      (if (eql dir :left)
+          (format t "The position of the leftmost ~a is ~a" x (car sorted-positions))
+          (format t "The position of the rightmost ~a is ~a" x (car (last sorted-positions))))))))                
           
           
           
