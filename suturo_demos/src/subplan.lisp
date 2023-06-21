@@ -268,7 +268,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                       (object (an object
                                                                   (description :HUMAN)
                                                                   (desig:when ?person-name
-                                                                    (size ?person-name))
+                                                                    (attribute ?person-name))
                                                                   (desig:when ?person-action
                                                                     (attribute ?person-action)))))))))
 
@@ -297,7 +297,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                       (object (an object
                                                                   (description :HUMAN)
                                                                   (desig:when ?person-name
-                                                                    (size ?person-name))
+                                                                    (attribute ?person-name))
                                                                   (desig:when ?person-action
                                                                     (attribute ?person-action)))))))))
         (values *perceived-person*)))        
@@ -328,11 +328,12 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                       (object (an object
                                                                   (description :HUMAN)
                                                                   (desig:when ?person-name
-                                                                    (size ?person-name))
+                                                                    (attribute ?person-name))
                                                                   (desig:when ?person-action
                                                                     (attribute ?person-action)))))))))
 
         (values *perceived-person*)))
+
 
 
 
@@ -357,7 +358,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                       (object (an object
                                                                   (description :HUMAN)
                                                                   (desig:when ?person-name
-                                                                    (size ?person-name))
+                                                                    (attribute ?person-name))
                                                                   (desig:when ?person-action
                                                                     (attribute ?person-action)))))))))
 
@@ -387,7 +388,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                       (object (an object
                                                                   (description :HUMAN)
                                                                   (desig:when ?person-name
-                                                                    (size ?person-name))
+                                                                    (attribute ?person-name))
                                                                   (desig:when ?person-action
                                                                     (attribute ?person-action)))))))))
 
@@ -417,7 +418,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
                                                       (object (an object
                                                                   (description :HUMAN)
                                                                   (desig:when ?person-name
-                                                                    (size ?person-name))
+                                                                    (attribute ?person-name))
                                                                   (desig:when ?person-action
                                                                     (attribute ?person-action)))))))))
 
