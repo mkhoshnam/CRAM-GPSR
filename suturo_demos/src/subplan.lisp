@@ -518,39 +518,39 @@ You just to put the last function (find-object-loop) at any plan that you want t
   (su-real:with-hsr-process-modules
     (setf number-object 0)
     
-    (find-it-1 ?person ?person-name ?person-action)
-    (when *perceived-object*
-      (if (eq (get-gender *perceived-object*) 'man)
+    (find-human-1 ?person ?person-name ?person-action)
+    (when *perceived-person*
+      (if (eq (get-gender *perceived-person*) 'man)
           (incf man)
           (incf woman)))
     
-    (find-it-2 ?person ?person-name ?person-action)
-    (when *perceived-object*
-      (if (eq (get-gender *perceived-object*) 'man)
+    (find-human-2 ?person ?person-name ?person-action)
+    (when *perceived-person*
+      (if (eq (get-gender *perceived-person*) 'man)
           (incf man)
           (incf woman)))
     
-    (find-it-3 ?person ?person-name ?person-action)
-    (when *perceived-object*
-      (if (eq (get-gender *perceived-object*) 'man)
+    (find-human-3 ?person ?person-name ?person-action)
+    (when *perceived-person*
+      (if (eq (get-gender *perceived-person*) 'man)
           (incf man)
           (incf woman)))
     
-    (find-it-4 ?person ?person-name ?person-action)
-    (when *perceived-object*
-      (if (eq (get-gender *perceived-object*) 'man)
+    (find-human-4 ?person ?person-name ?person-action)
+    (when *perceived-person*
+      (if (eq (get-gender *perceived-person*) 'man)
           (incf man)
           (incf woman)))
     
-    (find-it-5 ?person ?person-name ?person-action)
-    (when *perceived-object*
-      (if (eq (get-gender *perceived-object*) 'man)
+    (find-human-5 ?person ?person-name ?person-action)
+    (when *perceived-person*
+      (if (eq (get-gender *perceived-person*) 'man)
           (incf man)
           (incf woman)))
     
-    (find-it-6 ?person ?person-name ?person-action)
-    (when *perceived-object*
-      (if (eq (get-gender *perceived-object*) 'man)
+    (find-human-6 ?person ?person-name ?person-action)
+    (when *perceived-person*
+      (if (eq (get-gender *perceived-person*) 'man)
           (incf man)
           (incf woman)))
     
