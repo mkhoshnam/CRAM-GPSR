@@ -127,9 +127,6 @@
   (defparameter xpm-list (list 0))
   (defparameter ypm-list (list 0))
   (su-real:with-hsr-process-modules
-      (setf *number-object* 0)
-      (setf *number-people* 0)
-    
     (searching ?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room)
     (when ?object
       (counting-the-object ?object ?object-type ?object-atribute ?dir))
