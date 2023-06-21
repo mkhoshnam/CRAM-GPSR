@@ -266,11 +266,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
-                                                                  (type :HUMAN)
-                                                                  (desig:when ?human-name
-                                                                    (size ?human-name))
-                                                                  (desig:when ?human-action
-                                                                    (location ?human-action)))))))))
+                                                                  (description :HUMAN)
+                                                                  (desig:when ?person-name
+                                                                    (size ?person-name))
+                                                                  (desig:when ?person-action
+                                                                    (attribute ?person-action)))))))))
 
         (values *perceived-person*)))
         
@@ -295,12 +295,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
-                                                                  (type :HUMAN)
-                                                                  (desig:when ?human-name
-                                                                    (size ?human-name))
-                                                                  (desig:when ?human-action
-                                                                    (location ?human-action)))))))))
-
+                                                                  (description :HUMAN)
+                                                                  (desig:when ?person-name
+                                                                    (size ?person-name))
+                                                                  (desig:when ?person-action
+                                                                    (attribute ?person-action)))))))))
         (values *perceived-person*)))        
 
 
@@ -327,11 +326,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
-                                                                  (type :HUMAN)
-                                                                  (desig:when ?human-name
-                                                                    (size ?human-name))
-                                                                  (desig:when ?human-action
-                                                                    (location ?human-action)))))))))
+                                                                  (description :HUMAN)
+                                                                  (desig:when ?person-name
+                                                                    (size ?person-name))
+                                                                  (desig:when ?person-action
+                                                                    (attribute ?person-action)))))))))
 
         (values *perceived-person*)))
 
@@ -356,11 +355,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
-                                                                  (type :HUMAN)
-                                                                  (desig:when ?human-name
-                                                                    (size ?human-name))
-                                                                  (desig:when ?human-action
-                                                                    (location ?human-action)))))))))
+                                                                  (description :HUMAN)
+                                                                  (desig:when ?person-name
+                                                                    (size ?person-name))
+                                                                  (desig:when ?person-action
+                                                                    (attribute ?person-action)))))))))
 
         (values *perceived-person*)))
 
@@ -386,11 +385,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
-                                                                  (type :HUMAN)
-                                                                  (desig:when ?human-name
-                                                                    (size ?human-name))
-                                                                  (desig:when ?human-action
-                                                                    (location ?human-action)))))))))
+                                                                  (description :HUMAN)
+                                                                  (desig:when ?person-name
+                                                                    (size ?person-name))
+                                                                  (desig:when ?person-action
+                                                                    (attribute ?person-action)))))))))
 
         (values *perceived-person*)))
 
@@ -416,11 +415,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
               (setf *perceived-person* (exe:perform (an action
                                                       (type detecting)
                                                       (object (an object
-                                                                  (type :HUMAN)
-                                                                  (desig:when ?human-name
-                                                                    (size ?human-name))
-                                                                  (desig:when ?human-action
-                                                                    (location ?human-action)))))))))
+                                                                  (description :HUMAN)
+                                                                  (desig:when ?person-name
+                                                                    (size ?person-name))
+                                                                  (desig:when ?person-action
+                                                                    (attribute ?person-action)))))))))
 
         (values *perceived-person*)))
 
@@ -435,6 +434,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
              (funcall current-function x)
              (setf find-functions (cdr find-functions))
              (setq current-function (car find-functions)))))
+             
 
 
 (defun find-person-loop (?person ?person-name ?person-action)
@@ -472,6 +472,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
     (when *perceived-object*                       
       (setf object-loc-x (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
       (setf object-loc-y (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+      
       (setf xp-robot (cl-transforms:x (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
       (setf yp-robot (cl-transforms:y (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
 
@@ -495,9 +496,11 @@ You just to put the last function (find-object-loop) at any plan that you want t
     (when *perceived-person*                       
       (setf *object-loc-x* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
       (setf *object-loc-y* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-person*))))
+      
       (setf *xp-robot* (cl-transforms:x (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
       (setf *yp-robot* (cl-transforms:y (cl-transforms:origin (btr:pose (btr:get-robot-object)))))
-
+      
+      
       (defparameter *location*
         (cl-transforms-stamped:make-pose-stamped
          "base_footprint" 0.0
@@ -506,10 +509,10 @@ You just to put the last function (find-object-loop) at any plan that you want t
       
       (values *location*)
       (return-from find-object "find-person"))))
-
-
-
-
+          
+          
+          
+          
 
 (defun count-people-gender (?person ?person-name ?person-action)
   (defparameter man 0)
@@ -561,7 +564,7 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 
-(defun give-object (?object ?object-type ?object-atribute ?dir)  ;;dir  left or right, For examle the most left apple
+(defun give-object (?object ?object-type ?object-atribute ?dir) ;;dir  means direction, For examle the most left apple
   (let ((object-pos-list (list)))
     (su-real:with-hsr-process-modules
       (find-it-1 ?object ?object-type ?object-atribute)
@@ -604,15 +607,3 @@ You just to put the last function (find-object-loop) at any plan that you want t
       (if (eql dir :left)
           (format t "The position of the leftmost ~a is ~a" x (car sorted-positions))
           (format t "The position of the rightmost ~a is ~a" x (car (last sorted-positions))))))))                
-          
-          
-          
-          
-
-          
-          
-          
-          
-          
-          
-                
