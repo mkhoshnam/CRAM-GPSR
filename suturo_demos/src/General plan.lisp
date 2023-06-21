@@ -123,18 +123,20 @@
                                  
                                  
                                  
-(defun counting (?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room)
+(defun counting (?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room ?dir)  ;;dir  means direction, For examle the most left apple
   (defparameter xpm-list (list 0))
   (defparameter ypm-list (list 0))
   (su-real:with-hsr-process-modules
-      (setf number-object 0)
-      (setf number-people 0)
+      (setf *number-object* 0)
+      (setf *number-people* 0)
     
     (searching ?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room)
     (when ?object
-      (counting-the-object ?object))
+      (counting-the-object ?object ?object-type ?object-atribute ?dir))
+    (when ?dir
+      (give-object ?object ?object-type ?object-atribute ?dir)) 
     (when ?person
-      (count-people-gender ?person))))
+      (count-people-gender ?person ?person-name ?person-action))))
         
         
         
@@ -163,7 +165,7 @@
     (find-person-loop ?person ?person-name ?person-action)
     (when (and (or ?person? ?person-type ?person-action) (eq *perceived-person* nil))
       (return-from guiding "fail")))
-  (navigation-to-location ?furniture-location-2 ?room-2))                                     
+  (navigation-to-location ?furniture-location-2 ?room-2))                                   
           
           
    
