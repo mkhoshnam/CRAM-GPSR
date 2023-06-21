@@ -123,7 +123,7 @@
                                  
                                  
                                  
-(defun counting (?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room ?dir)  ;;dir  means direction, For examle the most left apple
+(defun counting (?object ?person ?object-type ?object-atribute ?person-name ?person-action ?furniture-location ?room ?dir)  ;;dir  left or right, For examle the most left apple
   (defparameter xpm-list (list 0))
   (defparameter ypm-list (list 0))
   (su-real:with-hsr-process-modules
