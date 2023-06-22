@@ -679,38 +679,86 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
 
 (defun count-the-object (?object ?person ?object-type ?object-atribute ?room ?location ?person-name ?person-action ?furniture-location)
-    (defparameter xpm-list (list 0))
-    (defparameter ypm-list (list 0))
+    (defparameter *xpm-list* (list 0))
+    (defparameter *ypm-list* (list 0))
     (searching ?object ?person ?object-type ?object-atribute ?room ?location ?person-name ?person-action ?furniture-location)
-      (setf number-object 0)
+      (setf *number-object* 0)
   
       (find-it-1 ?object ?object-type ?object-atribute)
       (when *perceived-object*
-        (setf number-object (+ number-object 1)))
+        (setf *number-object* (+ *number-object* 1))
+        (setf *xpm-object* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *ypm-object* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *xpm-object* (round *xpm-object* 0.1))
+        (setf *ypm-object* (round *ypm-object* 0.1))
+        (if (not (member *xpm-object* *xpm-list*))
+            (nconc *xpm-list* (list *xpm-object*)))
+        (if (not (member *ypm-object* *ypm-list*))
+            (nconc *ypm-list* (list *ypm-object*))))
       
       (find-it-2 ?object ?object-type ?object-atribute)
-      (when *perceived-object* 
-        (setf number-object (+ number-object 1)))
+      (when *perceived-object*
+        (setf *number-object* (+ *number-object* 1))
+        (setf *xpm-object* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *ypm-object* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *xpm-object* (round *xpm-object* 0.1))
+        (setf *ypm-object* (round *ypm-object* 0.1))
+        (if (not (member *xpm-object* *xpm-list*))
+            (nconc *xpm-list* (list *xpm-object*)))
+        (if (not (member *ypm-object* *ypm-list*))
+            (nconc *ypm-list* (list *ypm-object*))))
 
       (find-it-3 ?object ?object-type ?object-atribute)      
-      (when *perceived-object*   
-        (setf number-object (+ number-object 1)))
+      (when *perceived-object*
+        (setf *number-object* (+ *number-object* 1))
+        (setf *xpm-object* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *ypm-object* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *xpm-object* (round *xpm-object* 0.1))
+        (setf *ypm-object* (round *ypm-object* 0.1))
+        (if (not (member *xpm-object* *xpm-list*))
+            (nconc *xpm-list* (list *xpm-object*)))
+        (if (not (member *ypm-object* *ypm-list*))
+            (nconc *ypm-list* (list *ypm-object*))))
 
       (find-it-4 ?object ?object-type ?object-atribute)      
-      (when *perceived-object*    
-        (setf number-object (+ number-object 1)))
+      (when *perceived-object*
+        (setf *number-object* (+ *number-object* 1))
+        (setf *xpm-object* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *ypm-object* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *xpm-object* (round *xpm-object* 0.1))
+        (setf *ypm-object* (round *ypm-object* 0.1))
+        (if (not (member *xpm-object* *xpm-list*))
+            (nconc *xpm-list* (list *xpm-object*)))
+        (if (not (member *ypm-object* *ypm-list*))
+            (nconc *ypm-list* (list *ypm-object*))))
 
       (find-it-5 ?object ?object-type ?object-atribute)      
       (when *perceived-object*
-        (setf number-object (+ number-object 1)))
+        (setf *number-object* (+ *number-object* 1))
+        (setf *xpm-object* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *ypm-object* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *xpm-object* (round *xpm-object* 0.1))
+        (setf *ypm-object* (round *ypm-object* 0.1))
+        (if (not (member *xpm-object* *xpm-list*))
+            (nconc *xpm-list* (list *xpm-object*)))
+        (if (not (member *ypm-object* *ypm-list*))
+            (nconc *ypm-list* (list *ypm-object*))))
 
       (find-it-6 ?object ?object-type ?object-atribute)     
-      (when *perceived-object*        
-        (setf number-object (+ number-object 1)))
+      (when *perceived-object*
+        (setf *number-object* (+ *number-object* 1))
+        (setf *xpm-object* (cl-transforms:x (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *ypm-object* (cl-transforms:y (cl-transforms:translation (man-int:get-object-transform-in-map *perceived-object*))))
+        (setf *xpm-object* (round *xpm-object* 0.1))
+        (setf *ypm-object* (round *ypm-object* 0.1))
+        (if (not (member *xpm-object* *xpm-list*))
+            (nconc *xpm-list* (list *xpm-object*)))
+        (if (not (member *ypm-object* *ypm-list*))
+            (nconc *ypm-list* (list *ypm-object*))))
 
-      (if (> (length xpm-list) (length ypm-list))
-          (setf number-object (- (length xpm-list) 1))
-          (setf number-object (- (length ypm-list) 1)))
+      (if (> (length *xpm-list*) (length *ypm-list*))
+          (setf *number-object* (- (length *xpm-list*) 1))
+          (setf *number-object* (- (length *ypm-list*) 1)))
       (format t "This is the number of ~a:" x)
-      (print number-object))
+      (print *number-object*))
 
