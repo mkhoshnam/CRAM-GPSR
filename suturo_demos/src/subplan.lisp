@@ -673,4 +673,44 @@ You just to put the last function (find-object-loop) at any plan that you want t
     (let ((sorted-positions (sort object-pos-list #'(lambda (a b) (< (car a) (car b))))))
       (if (eql dir :left)
           (format t "The position of the leftmost ~a is ~a" x (car sorted-positions))
-          (format t "The position of the rightmost ~a is ~a" x (car (last sorted-positions))))))))                
+          (format t "The position of the rightmost ~a is ~a" x (car (last sorted-positions))))))))  
+
+
+
+
+(defun count-the-object (?object ?person ?object-type ?object-atribute ?room ?location ?person-name ?person-action ?furniture-location)
+    (defparameter xpm-list (list 0))
+    (defparameter ypm-list (list 0))
+    (searching ?object ?person ?object-type ?object-atribute ?room ?location ?person-name ?person-action ?furniture-location)
+      (setf number-object 0)
+  
+      (find-it-1 ?object ?object-type ?object-atribute)
+      (when *perceived-object*
+        (setf number-object (+ number-object 1)))
+      
+      (find-it-2 ?object ?object-type ?object-atribute)
+      (when *perceived-object* 
+        (setf number-object (+ number-object 1)))
+
+      (find-it-3 ?object ?object-type ?object-atribute)      
+      (when *perceived-object*   
+        (setf number-object (+ number-object 1)))
+
+      (find-it-4 ?object ?object-type ?object-atribute)      
+      (when *perceived-object*    
+        (setf number-object (+ number-object 1)))
+
+      (find-it-5 ?object ?object-type ?object-atribute)      
+      (when *perceived-object*
+        (setf number-object (+ number-object 1)))
+
+      (find-it-6 ?object ?object-type ?object-atribute)     
+      (when *perceived-object*        
+        (setf number-object (+ number-object 1)))
+
+      (if (> (length xpm-list) (length ypm-list))
+          (setf number-object (- (length xpm-list) 1))
+          (setf number-object (- (length ypm-list) 1)))
+      (format t "This is the number of ~a:" x)
+      (print number-object))
+
