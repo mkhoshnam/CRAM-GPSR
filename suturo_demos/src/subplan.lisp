@@ -264,13 +264,24 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
                  (return)))
               (setf *perceived-person* (exe:perform (an action
-                                                      (type detecting)
-                                                      (object (an object
-                                                                  (description :HUMAN)
-                                                                  (desig:when ?person-name
-                                                                    (attribute ?person-name))
-                                                                  (desig:when ?person-action
-                                                                    (attribute ?person-action)))))))))
+                                                  (type detecting)
+                                                  (object (an object
+                                                              (type :HUMAN)
+                                                              (attributes (list (desig:if ?person-action
+                                                                                          (attribute ?person-action)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-name
+                                                                                          (attribute ?person-name)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-gender
+                                                                                          (attribute ?person-gender)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-age
+                                                                                          (attribute ?person-age)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-color
+                                                                                          (attribute ?person-color)
+                                                                                          (attribute :nil)))))))))))
 
         (values *perceived-person*)))
         
@@ -293,13 +304,24 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
                  (return)))
               (setf *perceived-person* (exe:perform (an action
-                                                      (type detecting)
-                                                      (object (an object
-                                                                  (description :HUMAN)
-                                                                  (desig:when ?person-name
-                                                                    (attribute ?person-name))
-                                                                  (desig:when ?person-action
-                                                                    (attribute ?person-action)))))))))
+                                                  (type detecting)
+                                                  (object (an object
+                                                              (type :HUMAN)
+                                                              (attributes (list (desig:if ?person-action
+                                                                                          (attribute ?person-action)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-name
+                                                                                          (attribute ?person-name)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-gender
+                                                                                          (attribute ?person-gender)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-age
+                                                                                          (attribute ?person-age)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-color
+                                                                                          (attribute ?person-color)
+                                                                                          (attribute :nil)))))))))))
         (values *perceived-person*)))        
 
 
@@ -324,13 +346,24 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
                  (return)))
               (setf *perceived-person* (exe:perform (an action
-                                                      (type detecting)
-                                                      (object (an object
-                                                                  (description :HUMAN)
-                                                                  (desig:when ?person-name
-                                                                    (attribute ?person-name))
-                                                                  (desig:when ?person-action
-                                                                    (attribute ?person-action)))))))))
+                                                  (type detecting)
+                                                  (object (an object
+                                                              (type :HUMAN)
+                                                              (attributes (list (desig:if ?person-action
+                                                                                          (attribute ?person-action)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-name
+                                                                                          (attribute ?person-name)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-gender
+                                                                                          (attribute ?person-gender)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-age
+                                                                                          (attribute ?person-age)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-color
+                                                                                          (attribute ?person-color)
+                                                                                          (attribute :nil)))))))))))
 
         (values *perceived-person*)))
 
@@ -354,13 +387,24 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
                  (return)))
               (setf *perceived-person* (exe:perform (an action
-                                                      (type detecting)
-                                                      (object (an object
-                                                                  (description :HUMAN)
-                                                                  (desig:when ?person-name
-                                                                    (attribute ?person-name))
-                                                                  (desig:when ?person-action
-                                                                    (attribute ?person-action)))))))))
+                                                  (type detecting)
+                                                  (object (an object
+                                                              (type :HUMAN)
+                                                              (attributes (list (desig:if ?person-action
+                                                                                          (attribute ?person-action)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-name
+                                                                                          (attribute ?person-name)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-gender
+                                                                                          (attribute ?person-gender)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-age
+                                                                                          (attribute ?person-age)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-color
+                                                                                          (attribute ?person-color)
+                                                                                          (attribute :nil)))))))))))
 
         (values *perceived-person*)))
 
@@ -384,13 +428,24 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
                  (return)))
               (setf *perceived-person* (exe:perform (an action
-                                                      (type detecting)
-                                                      (object (an object
-                                                                  (description :HUMAN)
-                                                                  (desig:when ?person-name
-                                                                    (attribute ?person-name))
-                                                                  (desig:when ?person-action
-                                                                    (attribute ?person-action)))))))))
+                                                  (type detecting)
+                                                  (object (an object
+                                                              (type :HUMAN)
+                                                              (attributes (list (desig:if ?person-action
+                                                                                          (attribute ?person-action)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-name
+                                                                                          (attribute ?person-name)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-gender
+                                                                                          (attribute ?person-gender)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-age
+                                                                                          (attribute ?person-age)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-color
+                                                                                          (attribute ?person-color)
+                                                                                          (attribute :nil)))))))))))
 
         (values *perceived-person*)))
 
@@ -414,13 +469,24 @@ You just to put the last function (find-object-loop) at any plan that you want t
 
                  (return)))
               (setf *perceived-person* (exe:perform (an action
-                                                      (type detecting)
-                                                      (object (an object
-                                                                  (description :HUMAN)
-                                                                  (desig:when ?person-name
-                                                                    (attribute ?person-name))
-                                                                  (desig:when ?person-action
-                                                                    (attribute ?person-action)))))))))
+                                                  (type detecting)
+                                                  (object (an object
+                                                              (type :HUMAN)
+                                                              (attributes (list (desig:if ?person-action
+                                                                                          (attribute ?person-action)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-name
+                                                                                          (attribute ?person-name)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-gender
+                                                                                          (attribute ?person-gender)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-age
+                                                                                          (attribute ?person-age)
+                                                                                          (attribute :nil))
+                                                                                (desig:if ?person-color
+                                                                                          (attribute ?person-color)
+                                                                                          (attribute :nil)))))))))))
 
         (values *perceived-person*)))
 
